@@ -1,0 +1,18 @@
+# This is my .gitignore file.
+
+# MacOS system files
+*.DS_Store
+
+# XCode files
+*.xcodeproj/
+DerivedData/
+build/
+xuserdata/
+
+# Output files
+*.out
+
+# Compile object files and executables
+*.o
+*.exe
+*.app
