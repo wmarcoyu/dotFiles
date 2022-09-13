@@ -16,6 +16,8 @@ alias gc='git commit -m'
 alias gps='git push'
 alias gpl='git pull'
 alias gb='git branch'
+alias gco='git checkout'
+alias gl='git log'
 
 
 ########################### Project specifics #############################
