@@ -16,3 +16,6 @@ xuserdata/
 *.o
 *.exe
 *.app
+
+# Python virtual environment
+env/
