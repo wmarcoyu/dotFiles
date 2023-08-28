@@ -19,3 +19,15 @@ xuserdata/
 
 # Python virtual environment
 env/
+
+# Python cached files.
+__pycache__/
+
+# Temporary files.
+tmp/
+
+# Playground.
+demo.py
+
+# Log files.
+*.log

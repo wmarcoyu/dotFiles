@@ -1,0 +1,116 @@
+# .always-forget.txt
+
+
+# MacOS leak checking.
+MallocStackLogging=1 leaks -quiet -atExit -- ./TODO.exe
+
+
+# Latex.
+# LaTex subfigures.
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{TODO:IMG_NAME}
+        \caption*{TODO}
+    \end{subfigure}%
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{TODO:IMG_NAME}
+        \caption*{TODO}
+    \end{subfigure}%
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{TODO:IMG_NAME}
+        \caption*{TODO}
+    \end{subfigure}
+\end{figure}
+
+# LaTex multiple columns.
+\usepackage{multicol}
+\begin{multicols*}{n}
+  # keep writing normally and the text will be divided into
+  # n columns automatically
+  \columnbreak  # force a new column
+\end{multicols*}
+
+# LaTex itemize spacing.
+\begin{itemize}
+  \setlength{\itemsep}{0em}
+\end{itemize}
+
+
+# Python.
+pip freeze > requirements.txt  # Dump packages installed to requirements.txt
+# Run subprocess and print output.
+result = subprocess.run(
+       ["ls", "-a"], capture_output=True, text=True, check=True
+)
+print(result.stdout)
+# Disable pylint warnings.
+# pylint: disable=warning-name  # next to a code block
+# --disable=warning-name  	# when calling pylint
+
+
+# JavaScript.
+# Disable eslint warnings.
+/* eslint-disable warning-name  */	  # at the top of a file
+// eslint-disable-next-line warning-name  # for next line
+
+
+# Linux commands.
+tree -I "dir1|dir2|dir3|..."  # Ignore multiple directories.
+ps -ax | ag [keyword]	      # List processes and seach for keyword.	      
+
+
+# Silver Searcher.
+ag  # show help message
+ag --ignore-dir dir1 --ignore-dir dir2 <content>  # ignore multiple directories
+ag -A 10 "keyword"   # search for "keyword" and show 10 lines after result
+ag -B 10 "keyword"   # search for "keyword" and show 10 lines before result
+ag -C 10 "keyword"   # search for "keyword" and show 10 lines before and after
+      	 	     # result (C for context)
+
+
+# Common Emacs commands.
+C-x C-s	   # save buffer
+C-x C-c    # kill current Emacs process
+C-a 	   # go to the beginning of current line
+C-e 	   # go to the end of current line
+C-x C-;    # comment/uncomment current line
+C-x C-f    # find a file to open
+C-x C-b    # find a buffer to open
+C-s 	   # search a word
+C-r 	   # back-search a word
+C-g	   # abort current operation
+C-x 3	   # open a new window within current window
+C-x 0	   # closee a window within current window
+C-x 5 2    # open current buffer in a new window
+C-x 5 0    # close a window opened by the previous command
+C-x 8 RET  # switch to Unicode input mode
+C-x space  # rectangle selection
+C-x h      # select everything inside current buffer
+C-c n      # toggle directory tree view with neotree
+C-c C-c	   # change (enter) directory in neotree / add tag in org mode
+C-w 	   # cut
+C-k	   # cut current line after the cursor
+C-y	   # paste
+M-w	   # copy
+M-f        # move forward a word
+M-b	   # move backward a word
+M-}	   # move forward a paragraph
+M-{	   # move backward a paragraph
+M-> 	   # go to end of current buffer
+M-<	   # go to beginning of current buffer
+M-/        # autocomplete
+M-x 	   # command prompt
+M-.	   # go to definition
+## Common M-x prompts (autocomplete with TAB)
+term			# open the built-in terminal
+beginning-of-buffer	# go to the beginning of the buffer
+end-of-buffer		# go to the end of the buffer
+kill-buffer		# kill current buffer (not window)
+
+
+# Git commands.
+git reset <filename>		# remove a file from the added list
