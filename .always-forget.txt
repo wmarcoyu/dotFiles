@@ -114,3 +114,16 @@ kill-buffer		# kill current buffer (not window)
 
 # Git commands.
 git reset <filename>		# remove a file from the added list
+
+
+# AWS Linux commands.
+sudo systemctl start <service-name>	# start a service
+sudo systemctl stop <service-name>	# stop a service
+sudo systemctl restart <service-name>	# restart a service
+sudo systemctl reload <service-name>	# restart a service (no down time)
+sudo systemctl status <service-name>	# check service status
+sudo journalctl -xe 	      		# view detailed logs
+# After changes are made to service config files under /etc/systemd/system/,
+# reload daemon and restart the service(s) the changes correspond to.
+sudo systemctl daemon-reload
+sudo systemctl restart <service-name>
