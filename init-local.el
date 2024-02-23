@@ -6,9 +6,9 @@
 
 ;; Add MELPA to package archive list.
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 
 ;; Modified keyboard shortcuts
 (global-set-key "\C-x\C-b"                          'electric-buffer-list)
@@ -49,15 +49,11 @@
 ;; Intellisense syntax checking
 (use-package flycheck
   :init (global-flycheck-mode)
- 
-  ;; C++
-  (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
 
   ;; eslint
   (flycheck-add-mode 'javascript-eslint 'web-mode)
 
   :ensure t
-  :defer t
 )
 
 ;; Remove scrollbars, menu bars, and toolbars
@@ -90,7 +86,7 @@
 
 ;; Adjust window height.
 (setq default-frame-alist
-      '((height . 50)))
+      '((height . 55)))
 
 ;; Global company mode that allows dynamic autocomplete.
 (add-hook 'after-init-hook 'global-company-mode)
@@ -100,6 +96,25 @@
   (package-refresh-contents)
   (package-install 'elpy))
 (elpy-enable)
+
+;; C++ autocomplete.
+(use-package lsp-mode
+  :ensure t
+  :hook (c++-mode . lsp)
+  :commands lsp
+  :config
+  (setq lsp-prefer-flymake nil))
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+(setq-default c-basic-offset 2)
 
 ;; Color theme.
 (unless (package-installed-p 'darcula-theme)
@@ -167,7 +182,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+   '(cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -222,9 +237,16 @@
           (lambda ()
             (local-set-key (kbd "C-c p") 'markdown-preview)))
 
+(use-package markdown-preview-mode
+  :ensure t)
+
+(add-hook 'markdown-mode-hook 'markdown-preview-mode)
+(setq markdown-preview-stylesheets (list ""))
+
 ;; Latex tools.
-;; (use-package auctex
-;;   :ensure t)
+(use-package tex
+  :ensure auctex)
+
 (use-package pdf-tools
   :ensure t
   :config
@@ -244,3 +266,52 @@
             (add-hook 'after-save-hook
                       (lambda ()
                         (TeX-command "LaTeX" 'TeX-master-file -1)) nil 'local)))
+
+;; Java Intellisense.
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (java-mode . lsp-deferred))
+
+(use-package lsp-java
+  :ensure t
+  :after lsp
+  :config (add-hook 'java-mode-hook 'lsp))
+
+;; Rust Development.
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+(unless (package-installed-p 'rust-mode)
+  (package-refresh-contents)
+  (package-install 'rust-mode))
+
+(add-hook 'rust-mode-hook
+          (lambda () (setq indent-tabs-mode nil)))
+
+(unless (package-installed-p 'cargo)
+  (package-refresh-contents)
+  (package-install 'cargo))
+(add-hook 'rust-mode-hook 'cargo-minor-mode)
+
+;; Flycheck for Rust.
+(unless (package-installed-p 'flycheck)
+  (package-refresh-contents)
+  (package-install 'flycheck))
+(add-hook 'rust-mode-hook 'flycheck-mode)
+
+;; Remote editing with Tramp.
+(use-package tramp
+  :config
+  (setq tramp-default-method "ssh")
+  (setq tramp-ssh-controlmaster-options
+        (concat
+         "-o ControlMaster auto "
+         "-o ControlPersist yes "
+         "-o ControlPath ~/.ssh/socket-%%C "
+         "-o ServerAliveInterval 60 "
+         "-o ServerAliveCountMax 5 "
+         ))
+  (setq tramp-use-ssh-controlmaster-options nil)
+  :defer 1
+)

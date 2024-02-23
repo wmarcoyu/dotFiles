@@ -1,4 +1,18 @@
-######################## Save my life from typos #########################
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set the theme to load.
+ZSH_THEME="robbyrussell"
+
+# Enable command auto-correction.
+ENABLE_CORRECTION="true"
+
+# Plugins.
+plugins=(git thefuck zsh-autosuggestions zsh-syntax-highlighting)
+
+source $ZSH/oh-my-zsh.sh
+
+# Save my life from typos.
 alias ls='ls -G'
 alias lss='ls'
 alias lsss='ls'
@@ -6,16 +20,27 @@ alias claer='clear'
 alias mkdri='mkdir'
 alias dls='cd ~/Downloads/'
 alias say='espeak'
-alias td='open ~/wmarcoyu/TODO'
-alias tg='open ~/wmarcoyu/TOGO'
+alias td='e ~/wmarcoyu/TODO.org'
+alias tg='e ~/wmarcoyu/TOGO.org'
+alias tw='e ~/wmarcoyu/watch-list.org'
 alias op='open'
 alias lv='open ~/wmarcoyu/pepTalk'
+alias life='cd ~/Downloads/La\ Vida/'
+alias day='e ~/wmarcoyu/my-day.org'
 alias cv='open ~/Downloads/Yu_Wang_CV.pdf'
 alias opsa='open -a Safari'
 alias brv='open -a "Brave Browser"'
-alias conf='open ~/.zshrc'
+alias we='open -a WeChat'
+alias conf='e ~/.zshrc'
+alias ck='open -a "Activity Monitor"'
+alias getlatextemplate='cp ~/wmarcoyu/math/template.tex template.tex'
+alias mkae='make'
+alias af='e ~/wmarcoyu/dotFiles/.always-forget.txt'
+alias saf='cat ~/wmarcoyu/dotFiles/.always-forget.txt'
+alias notes='e ~/wmarcoyu/cs-notes.md'
+alias cppcompile='g++ -std=c++17 -Wall -Werror -pedantic -g -fsanitize=address -fsanitize=undefined'
 
-#### Git shortcuts
+# Git shortcuts
 alias gs='git status'
 alias ga.='git add .'
 alias ga='git add'
@@ -27,48 +52,37 @@ alias gco='git checkout'
 alias gl='git log'
 alias gsw='git switch'
 alias getgitignore='cp ~/wmarcoyu/dotfiles/.gitignore .gitignore'
-
-
-########################### Project specifics #############################
-
-#### EECS 485
-
-alias 485='cd ~/Downloads/EECS_485/'
 alias venv='source env/bin/activate'
-alias 485qs='op ~/wmarcoyu/485Questions'
 
-# p1-insta485-static
-alias 485p1='cd ~/Downloads/EECS_485/p1-insta485-static/'
+# Emacs
+e ()
+{
+  emacs "$@" &
+}
 
-# p2-insta485-serverside
-alias 485p2='cd ~/Downloads/EECS_485/p2-insta485-serverside'
+# Colorize ls output.
+LSCOLORS=ga
+export LSCOLORS
 
-# p3-insta485-clientside
-alias 485p3='cd ~/Downloads/EECS_485/p3-insta485-clientside/'
+# Suppress Malloc warning:
+# nano zone abandoned due to inability to reserve vm space.
+export MallocNanoZone=0
 
-# p4-mapreduce
-alias 485p4='cd ~/Downloads/EECS_485/p4-mapreduce/'
-alias mrm='mapreduce-manager'
-alias mrw='mapreduce-worker'
-# pka stands for process kill all
-alias pka='pkill -f mapreduce-'
-alias stt='./bin/mapreduce start'
-alias stts='./bin/mapreduce status'
-alias stop='./bin/mapreduce stop'
-alias rstt='/bin/mapreduce restart'
-alias style='./bin/style'
-alias sofar='./bin/testsofar'
+# Custom environment variables.
+export CAEN='wmarcoyu@login.engin.umich.edu'
+export E583A='wmarcoyu@eecs583a.eecs.umich.edu'
+export E583B='wmarcoyu@eecs583b.eecs.umich.edu'
 
-# p5-search-engine
-alias 485p5='cd ~/Downloads/EECS_485/p5-search-engine/'
+# University of Michigan CAEN account.
+alias caen='ssh wmarcoyu@login.engin.umich.edu'
 
-alias 485final='cd ~/Downloads/EECS_485/final-review-notes/'
-
-#### EECS 370
-alias 370='cd ~/Downloads/EECS_370/'
-alias 370p1='cd ~/Downloads/EECS_370/p1/'
-alias 370p1a='cd ~/Downloads/EECS_370/p1/370p1a/'
-alias 370p1s='cd ~/Downloads/EECS_370/p1/370p1s/'
-alias 370p2c='cd ~/Downloads/EECS_370/p2/370p2c/'
-alias 370p3='cd ~/Downloads/EECS_370/p3/'
-alias 370p4='cd ~/Downloads/EECS_370/p4/'
+# Project specifics.
+alias run='./bin/starchaser_run'
+alias js='npx webpack --watch'
+alias getmyip='http ipinfo.io/ip'
+alias whereami='http ipinfo.io/loc'
+alias ec2app='ssh -i credentials/starchasers.pem ec2-user@ec2-50-17-5-132.compute-1.amazonaws.com'
+alias ec2data='ssh -i credentials/starchasers-data.pem ec2-user@ec2-3-238-88-126.compute-1.amazonaws.com'
+# >>> xmake >>>
+test -f "/Users/marco.w/.xmake/profile" && source "/Users/marco.w/.xmake/profile"
+# <<< xmake <<<

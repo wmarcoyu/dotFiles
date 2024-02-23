@@ -6,7 +6,7 @@ MallocStackLogging=1 leaks -quiet -atExit -- ./TODO.exe
 
 
 # Latex.
-# LaTex subfigures.
+# Subfigures.
 \begin{figure}[h]
     \centering
     \begin{subfigure}{.3\textwidth}
@@ -26,7 +26,7 @@ MallocStackLogging=1 leaks -quiet -atExit -- ./TODO.exe
     \end{subfigure}
 \end{figure}
 
-# LaTex multiple columns.
+# Multiple columns.
 \usepackage{multicol}
 \begin{multicols*}{n}
   # keep writing normally and the text will be divided into
@@ -34,10 +34,43 @@ MallocStackLogging=1 leaks -quiet -atExit -- ./TODO.exe
   \columnbreak  # force a new column
 \end{multicols*}
 
-# LaTex itemize spacing.
+# Itemize spacing.
 \begin{itemize}
   \setlength{\itemsep}{0em}
 \end{itemize}
+
+# Auto-sized parentheses. Also work for square brackets.
+\left(
+\right)
+# Auto-sized curly braces - escape braces.
+\left\{
+\left\}
+
+# Different columns in the same table.
+# The first row will have two columns with the latter three merged into one.
+\begin{tabular}[h]{|c|c|c|c|}
+  \hline
+  first & \multicolumn{3}{c|}{combined} \\
+  \hline
+  first & second & third & fourth \\
+  \hline
+\end{tabular}
+
+# Algorithms.
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+	\Function{Find-Ind-Set}{$G = (V, E)$}
+        \State{$S \gets \varnothing$}
+        \For{$v\in V$}
+        \State{Randomly sample a random real $r_v\in[0,1]$}
+        \EndFor{}
+        \State{$S \gets S \cup \set{v}$}
+        \EndIf{}
+        \EndFor{}
+        \State{\Return{S}}
+        \EndFunction{}
+\end{algorithmic}
+\end{algorithm}
 
 
 # Python.
@@ -59,9 +92,14 @@ print(result.stdout)
 
 
 # Linux commands.
-tree -I "dir1|dir2|dir3|..."  # Ignore multiple directories.
-ps -ax | ag [keyword]	      # List processes and seach for keyword.	      
-
+tree -I "dir1|dir2|dir3|..."	      # ignore multiple directories
+ps -ax | ag [keyword]	      	      # list processes and seach for keyword
+find /parent/dir/ -name "<filename>"  # search for a file with <filename>
+     		  		      # under /parent/dir/. <filename> can
+				      # contain wildcards.
+grep [-r] <keyword> <dir>	      # search for <keyword> in all files under
+     	  	    		      # the current directory. [-r] allows for
+				      # search in subdirectories as well.
 
 # Silver Searcher.
 ag  # show help message
@@ -114,7 +152,8 @@ kill-buffer		# kill current buffer (not window)
 
 # Git commands.
 git reset <filename>		# remove a file from the added list
-
+git branch -d <branch-name>	# delete a local branch
+git branch -D <branch-name>	# force delete a local branch
 
 # AWS Linux commands.
 sudo systemctl start <service-name>	# start a service

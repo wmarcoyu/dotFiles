@@ -1,12 +1,22 @@
-;; My Emacs configuration file for remote servers.
+;;; My Emacs configuration file.
+;;;
+;;; Thanks to Andrew DeOrio -
+;;; his entire init.el here:
+;;; https://github.com/awdeorio/dotfiles/blob/master/.emacs.d/init.el
 
 ;; Add MELPA to package archive list.
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 
-;; Don't show a startup message.
+;; Modified keyboard shortcuts
+(global-set-key "\C-x\C-b"                          'electric-buffer-list)
+(global-set-key "\M-o"                              'other-window)
+(global-set-key "\C-x\C-o"                          'other-frame)
+(global-set-key (kbd "C-c r")                       'revert-buffer)
+
+;; Don't show a startup message
 (setq inhibit-startup-message t)
 
 ;; Show line and column numbers
@@ -40,14 +50,10 @@
 (use-package flycheck
   :init (global-flycheck-mode)
 
-  ;; C++
-  (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17")))
-
   ;; eslint
   (flycheck-add-mode 'javascript-eslint 'web-mode)
 
   :ensure t
-  :defer t
 )
 
 ;; Remove scrollbars, menu bars, and toolbars
@@ -59,24 +65,28 @@
 ;; will do. Disable GUI dialogs and use emacs text interface.
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq use-dialog-box nil)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(flycheck use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+;; macOS modifier keys
+(setq mac-command-modifier 'meta) ; Command == Meta
+(setq mac-option-modifier 'super) ; Option == Super
+
+;; Set window width to 80 characters.
+(defun set-window-width ()
+  "Set the width of the window to 85 characters."
+  (interactive)
+  (if (window-system)
+      (set-frame-width (selected-frame) 85)))
+(add-hook 'window-configuration-change-hook 'set-window-width)
 
 ;; Disable auto-backup files.
 (setq make-backup-files nil)
 
 ;; Disable auto-save files.
 (setq auto-save-default nil)
+
+;; Adjust window height.
+(setq default-frame-alist
+      '((height . 50)))
 
 ;; Global company mode that allows dynamic autocomplete.
 (add-hook 'after-init-hook 'global-company-mode)
@@ -86,6 +96,23 @@
   (package-refresh-contents)
   (package-install 'elpy))
 (elpy-enable)
+
+;; C++ autocomplete.
+(use-package lsp-mode
+  :ensure t
+  :hook (c++-mode . lsp)
+  :commands lsp
+  :config
+  (setq lsp-prefer-flymake nil))
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
 
 ;; Color theme.
 (unless (package-installed-p 'darcula-theme)
@@ -133,5 +160,147 @@
   '((t (:foreground "green")))
   "Face for highlighting INFO keywords.")
 
+;; git.
+(use-package magit
+  :ensure t
+  :commands (magit-status)
+  :bind (("C-x g" . magit-status)))
+
+;; View directory tree with neotree.
+(use-package neotree
+  :ensure t
+  :bind ("C-c n" . neotree-toggle)
+  :config
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+(use-package all-the-icons
+  :ensure t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(pdf-tools auctex cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; Web Development
+(use-package web-mode
+  :mode "\\.jsx?\\'"
+  :mode "\\.html?\\'"
+  :mode "\\.phtml\\'"
+  :mode "\\.tpl\\.php\\'"
+  :mode "\\.[agj]sp\\'"
+  :mode "\\.as[cp]x\\'"
+  :mode "\\.erb\\'"
+  :mode "\\.mustache\\'"
+  :mode "\\.djhtml\\'"
+  :config
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-attr-indent-offset 2)
+  (setq web-mode-enable-auto-indentation nil)
+  (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil))
+  :ensure t
+  :defer t
+  )
+
 ;; Enable hs-minor-mode to fold code blocks.
 (add-hook 'prog-mode-hook #'hs-minor-mode)
+
+;; Add IN-PROGRESS keyword to org mode.
+(setq org-todo-keywords
+      '((sequence "TODO" "IN-PROGRESS" "DONE")))
+(setq org-todo-keyword-faces
+      '(("IN-PROGRESS" . "red")))
+
+;; Markdown mode.
+(unless (package-installed-p 'markdown-mode)
+  (package-refresh-contents)
+  (package-install 'markdown-mode))
+(require 'markdown-mode)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;; Shortcut to preview a markdown file.
+(add-hook 'markdown-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c p") 'markdown-preview)))
+
+(use-package markdown-preview-mode
+  :ensure t)
+
+(add-hook 'markdown-mode-hook 'markdown-preview-mode)
+(setq markdown-preview-stylesheets (list ""))
+
+;; Latex tools.
+(use-package tex
+  :ensure auctex)
+
+;; Automatically refresh the viewer.
+(add-hook 'TeX-after-compilation-finished-functions
+          #'TeX-revert-document-buffer)
+
+;; Compile on save.
+(add-hook 'LaTeX-mode-hook
+          (lambda ()
+            (add-hook 'after-save-hook
+                      (lambda ()
+                        (TeX-command "LaTeX" 'TeX-master-file -1)) nil 'local)))
+
+;; Java Intellisense.
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (java-mode . lsp-deferred))
+
+(use-package lsp-java
+  :ensure t
+  :after lsp
+  :config (add-hook 'java-mode-hook 'lsp))
+
+;; Rust Development.
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+(unless (package-installed-p 'rust-mode)
+  (package-refresh-contents)
+  (package-install 'rust-mode))
+
+(add-hook 'rust-mode-hook
+          (lambda () (setq indent-tabs-mode nil)))
+
+(unless (package-installed-p 'cargo)
+  (package-refresh-contents)
+  (package-install 'cargo))
+(add-hook 'rust-mode-hook 'cargo-minor-mode)
+
+;; Flycheck for Rust.
+(unless (package-installed-p 'flycheck)
+  (package-refresh-contents)
+  (package-install 'flycheck))
+(add-hook 'rust-mode-hook 'flycheck-mode)
+
+;; Remote editing with Tramp.
+(use-package tramp
+  :config
+  (setq tramp-default-method "ssh")
+  (setq tramp-ssh-controlmaster-options
+        (concat
+         "-o ControlMaster auto "
+         "-o ControlPersist yes "
+         "-o ControlPath ~/.ssh/socket-%%C "
+         "-o ServerAliveInterval 60 "
+         "-o ServerAliveCountMax 5 "
+         ))
+  (setq tramp-use-ssh-controlmaster-options nil)
+  :defer 1
+)
