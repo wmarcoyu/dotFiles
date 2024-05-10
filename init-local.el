@@ -1,4 +1,4 @@
-;;; My Emacs configuration file.
+;;; package --- Summary My Emacs configuration file.
 ;;;
 ;;; Thanks to Andrew DeOrio -
 ;;; his entire init.el here:
@@ -22,6 +22,19 @@
 ;; Show line and column numbers
 (setq line-number-mode t)
 (setq column-number-mode t)
+
+;; Let's be a little transparent (on macOS).
+( when (eq system-type 'darwin)
+    (defun set-frame-transparency (&optional frame)
+      (let ((alpha '(90 . 90)))
+	(when frame
+	  (set-frame-parameter frame 'alpha alpha))
+	(add-to-list 'default-frame-alist `(alpha . ,alpha))))
+  ;; Apply transparency to the current frame
+  (set-frame-transparency (selected-frame))
+  ;; Ensure all future frames get the same transparency
+  (add-hook 'after-make-frame-functions 'set-frame-transparency)
+ )
 
 ;; Show syntax highlighting
 (global-font-lock-mode t)
@@ -70,13 +83,11 @@
 (setq mac-command-modifier 'meta) ; Command == Meta
 (setq mac-option-modifier 'super) ; Option == Super
 
-;; Set window width to 80 characters.
-(defun set-window-width ()
-  "Set the width of the window to 85 characters."
-  (interactive)
-  (if (window-system)
-      (set-frame-width (selected-frame) 85)))
-(add-hook 'window-configuration-change-hook 'set-window-width)
+;; Highlight characters beyond 90 columns.
+(require 'whitespace)
+(setq whitespace-style '(face lines-tail))
+(setq whitespace-line-column 90)
+(add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;; Disable auto-backup files.
 (setq make-backup-files nil)
@@ -84,9 +95,9 @@
 ;; Disable auto-save files.
 (setq auto-save-default nil)
 
-;; Adjust window height.
+;; Adjust window width and height.
 (setq default-frame-alist
-      '((height . 55)))
+      '((width . 90) (height . 55)))
 
 ;; Global company mode that allows dynamic autocomplete.
 (add-hook 'after-init-hook 'global-company-mode)
@@ -121,6 +132,12 @@
   (package-refresh-contents)
   (package-install 'darcula-theme))
 (load-theme 'darcula t)
+
+;; (use-package spacemacs-common
+;;     :ensure spacemacs-theme
+;;     :defer t
+;;     )
+;; (load-theme 'spacemacs-dark t)
 
 ;; Show line numbers and disable the fringe.
 (global-display-line-numbers-mode)
@@ -182,7 +199,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+   '(realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -247,11 +264,6 @@
 (use-package tex
   :ensure auctex)
 
-(use-package pdf-tools
-  :ensure t
-  :config
-  (pdf-tools-install))
-
 ;; Set pdf tools as the default viewer.
 (setq TeX-view-program-selection '((output-pdf "pdf-tools"))
       TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
@@ -315,3 +327,35 @@
   (setq tramp-use-ssh-controlmaster-options nil)
   :defer 1
 )
+
+;; GitHub Copilot requirements.
+(use-package dash
+  :ensure t)
+
+(use-package s
+  :ensure t)
+
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
+(use-package f
+  :ensure t)
+;; GitHub Copilot.
+(add-to-list 'load-path "/Users/yuwang/.emacs.d/copilot.el")
+(require 'copilot)
+;; you can utilize :map :hook and :config to customize copilot
+(add-hook 'prog-mode-hook 'copilot-mode)
+(define-key copilot-completion-map (kbd "\C-x\C-y") 'copilot-accept-completion)
+(setq copilot-indent-offset-warning-disable t)
+
+;; Run Python code in org-mode.
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t))) ;; Make sure Python is enabled
+(setq org-babel-python-command "python3")
+
+;; Debugger frontend.
+(use-package realgud
+  :ensure t)

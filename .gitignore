@@ -4,10 +4,13 @@
 *.DS_Store
 
 # XCode files
-*.xcodeproj/
+xcuserdata/
+project.xcworkspace/xcuserdata/
+DerivedData/
+*.pbxuser
+*.mode1v3
 DerivedData/
 build/
-xuserdata/
 *.dSYM/
 
 # Output files
