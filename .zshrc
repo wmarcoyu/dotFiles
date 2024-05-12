@@ -19,13 +19,14 @@ alias lsss='ls'
 alias claer='clear'
 alias mkdri='mkdir'
 alias dls='cd ~/Downloads/'
-alias say='espeak'
+alias dcm='cd ~/Documents/'
+alias prj='cd ~/Projects/'
 alias td='e ~/wmarcoyu/TODO.org'
 alias tg='e ~/wmarcoyu/TOGO.org'
 alias tw='e ~/wmarcoyu/watch-list.org'
 alias op='open'
-alias lv='open ~/wmarcoyu/pepTalk'
-alias life='cd ~/Downloads/La\ Vida/'
+alias lv='e ~/wmarcoyu/pepTalk.txt'
+alias life='cd ~/Downloads/La-Vida/'
 alias day='e ~/wmarcoyu/my-day.org'
 alias cv='open ~/Downloads/Yu_Wang_CV.pdf'
 alias opsa='open -a Safari'
@@ -38,7 +39,8 @@ alias mkae='make'
 alias af='e ~/wmarcoyu/dotFiles/.always-forget.txt'
 alias saf='cat ~/wmarcoyu/dotFiles/.always-forget.txt'
 alias notes='e ~/wmarcoyu/cs-notes.md'
-alias cppcompile='g++ -std=c++17 -Wall -Werror -pedantic -g -fsanitize=address -fsanitize=undefined'
+alias cppcompile='g++ -std=c++17 -Wall -Werror -pedantic -g \
+-fsanitize=address -fsanitize=undefined'
 
 # Git shortcuts
 alias gs='git status'
@@ -81,8 +83,24 @@ alias run='./bin/starchaser_run'
 alias js='npx webpack --watch'
 alias getmyip='http ipinfo.io/ip'
 alias whereami='http ipinfo.io/loc'
-alias ec2app='ssh -i credentials/starchasers.pem ec2-user@ec2-50-17-5-132.compute-1.amazonaws.com'
-alias ec2data='ssh -i credentials/starchasers-data.pem ec2-user@ec2-3-238-88-126.compute-1.amazonaws.com'
+alias ec2app='ssh -i credentials/starchasers.pem \
+ec2-user@ec2-50-17-5-132.compute-1.amazonaws.com'
+alias ec2data='ssh -i credentials/starchasers-data.pem \
+ec2-user@ec2-3-238-88-126.compute-1.amazonaws.com'
+
+# LLVM-CFG-ANNOTATOR.
+alias ir='clang \
+--sysroot=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+-emit-llvm -S -Xclang -disable-O0-optnone'
+alias noalloca='opt -passes="mem2reg" -S'
+alias gendot='opt -disable-output -passes="dot-cfg"'
+alias genpdf='cat .main.dot | dot -Tpdf > main.pdf'
+alias run='opt -disable-output \
+-load-pass-plugin=./build/ProgramVariable/ProgramVariable.dylib \
+-passes="program-variable"'
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 # >>> xmake >>>
-test -f "/Users/marco.w/.xmake/profile" && source "/Users/marco.w/.xmake/profile"
+test -f "/Users/yuwang/.xmake/profile" && source "/Users/yuwang/.xmake/profile"
 # <<< xmake <<<
