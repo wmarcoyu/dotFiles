@@ -199,7 +199,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+   '(load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -343,7 +343,7 @@
 (use-package f
   :ensure t)
 ;; GitHub Copilot.
-(add-to-list 'load-path "/Users/yuwang/.emacs.d/copilot.el")
+(add-to-list 'load-path "~/.emacs.d/copilot.el")
 (require 'copilot)
 ;; you can utilize :map :hook and :config to customize copilot
 (add-hook 'prog-mode-hook 'copilot-mode)
@@ -355,7 +355,3 @@
  'org-babel-load-languages
  '((python . t))) ;; Make sure Python is enabled
 (setq org-babel-python-command "python3")
-
-;; Debugger frontend.
-(use-package realgud
-  :ensure t)
