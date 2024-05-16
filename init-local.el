@@ -67,6 +67,7 @@
   (flycheck-add-mode 'javascript-eslint 'web-mode)
 
   :ensure t
+  :defer t
 )
 
 ;; Remove scrollbars, menu bars, and toolbars
@@ -111,6 +112,7 @@
 ;; C++ autocomplete.
 (use-package lsp-mode
   :ensure t
+  :defer t
   :hook (c++-mode . lsp)
   :commands lsp
   :config
@@ -118,11 +120,13 @@
 
 (use-package yasnippet
   :ensure t
+  :defer t
   :config
   (yas-global-mode 1))
 
 (use-package lsp-ui
   :ensure t
+  :defer t
   :commands lsp-ui-mode)
 
 (setq-default c-basic-offset 2)
@@ -182,24 +186,28 @@
 ;; git.
 (use-package magit
   :ensure t
+  :defer t
   :commands (magit-status)
   :bind (("C-x g" . magit-status)))
 
 ;; View directory tree with neotree.
 (use-package neotree
   :ensure t
+  :defer t
   :bind ("C-c n" . neotree-toggle)
   :config
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
 (use-package all-the-icons
-  :ensure t)
+  :ensure t
+  :defer t
+)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+   '(prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -218,6 +226,7 @@
   :mode "\\.erb\\'"
   :mode "\\.mustache\\'"
   :mode "\\.djhtml\\'"
+  :mode "\\.vue\\'"
   :config
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
@@ -255,14 +264,18 @@
             (local-set-key (kbd "C-c p") 'markdown-preview)))
 
 (use-package markdown-preview-mode
-  :ensure t)
+  :ensure t
+  :defer t
+)
 
 (add-hook 'markdown-mode-hook 'markdown-preview-mode)
 (setq markdown-preview-stylesheets (list ""))
 
 ;; Latex tools.
 (use-package tex
-  :ensure auctex)
+  :ensure auctex
+  :defer t
+)
 
 ;; Set pdf tools as the default viewer.
 (setq TeX-view-program-selection '((output-pdf "pdf-tools"))
@@ -282,11 +295,13 @@
 ;; Java Intellisense.
 (use-package lsp-mode
   :ensure t
+  :defer t
   :commands (lsp lsp-deferred)
   :hook (java-mode . lsp-deferred))
 
 (use-package lsp-java
   :ensure t
+  :defer t
   :after lsp
   :config (add-hook 'java-mode-hook 'lsp))
 
@@ -325,23 +340,30 @@
          "-o ServerAliveCountMax 5 "
          ))
   (setq tramp-use-ssh-controlmaster-options nil)
-  :defer 1
+  :defer t
 )
 
 ;; GitHub Copilot requirements.
 (use-package dash
-  :ensure t)
+  :ensure t
+  :defer t
+)
 
 (use-package s
-  :ensure t)
+  :ensure t
+  :defer t
+)
 
 (use-package editorconfig
   :ensure t
+  :defer t
   :config
   (editorconfig-mode 1))
 
 (use-package f
-  :ensure t)
+  :ensure t
+  :defer t
+)
 ;; GitHub Copilot.
 (add-to-list 'load-path "~/.emacs.d/copilot.el")
 (require 'copilot)
@@ -355,3 +377,55 @@
  'org-babel-load-languages
  '((python . t))) ;; Make sure Python is enabled
 (setq org-babel-python-command "python3")
+
+;; YAML mode.
+(use-package yaml-mode
+  :mode "\\.yml\\'"
+  :ensure t
+  :defer t
+)
+
+;; Vue mode.
+(use-package vue-mode
+  :ensure t
+  :defer t
+  :mode "\\.vue\\'"
+  :config
+  (add-hook 'vue-mode-hook
+            (lambda ()
+              (setq indent-tabs-mode nil)
+              (setq js-indent-level 2)
+              (setq css-indent-offset 2)
+              (setq tab-width 2)))
+)
+
+;; TypeScript mode.
+(use-package typescript-mode
+  :ensure t
+  :defer t
+  :mode "\\.ts\\'"
+  :config
+  (setq typescript-indent-level 2)
+)
+
+;; LSP for Vue and TypeScript.
+(use-package lsp-mode
+  :ensure t
+  :defer t
+  :hook ((vue-mode . lsp)
+         (typescript-mode . lsp))
+  :commands lsp
+)
+(use-package lsp-ui
+  :ensure t
+  :defer t
+  :commands lsp-ui-mode
+)
+
+;; Prettier for Vue and TypeScript.
+(use-package prettier-js
+  :ensure t
+  :defer t
+  :hook ((vue-mode . prettier-js-mode)
+         (typescript-mode . prettier-js-mode))
+)
