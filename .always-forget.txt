@@ -122,6 +122,22 @@ bear -- make			      # generate compile_commands.json out of
      				      # a Makefile.
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..  # generate compile_commands.json
       					     # with cmake
+df -h				      # generate a high-level overview of file
+   				      # system usage; useful to check the usage
+				      # percentage of each partition
+du -h [root-directory]		      # generate the size of each file/subdirectory
+      				      # recursively under [root-directory], which
+				      # is by default the current directory (.)
+du -h --max-depth=n [root-directory]  # same thing as above with a limit on the
+      		    		      # recursive depth. n being 1 is perhaps
+				      # the most useful, which is an overview of
+				      # [root-directory] (. by default)
+du -sh [root-directory] 	      # generate the size of [root-directory]
+       				      # itself (-s meaning summary) (. by default)
+sudo -l				      # check if current user has sudo access
+ping -c 4 8.8.8.8		      # ping Google DNS server to check connectivity
+sudo chown -R <username> <filename>   # recursively change the owner of <filename>
+     	      		 	      # to <username>
 
 
 # The Silver Searcher.
@@ -233,6 +249,10 @@ P	   # paste the clipboard before cursor
 git reset <filename>		# remove a file from the added list
 git branch -d <branch-name>	# delete a local branch
 git branch -D <branch-name>	# force delete a local branch
+git restore <filename>		# restore (remove) changes in a file
+git diff [filename]    		# view detailed changes in unstaged files
+git diff --staged [filename]	# view detailed changes in staged but not
+    	 			# yet committed files
 
 
 # AWS Linux commands.
@@ -260,3 +280,22 @@ settings set stop-line-count-before <n>  # show n line before the current line
 settings set stop-line-count-after <n>   # show n line after the current line
 process launch -- <arg1> <arg2> ...	 # start the debugger with arguments
 fr/frame v   			   	 # list all variables currently in scope
+
+
+# Docker
+docker ps				# list all running Docker containers
+sudo docker-compose -f <path-to-docker-compose-yml> build
+     		       			# build a Docker image with docker-compose
+sudo docker-compose -f <path-to-docker-compose-yml> up
+     		       			# run a Docker image
+docker stop <container-id-or-name>	# stop a container based on id/name
+sudo docker-compose -f <path-to-docker-compose-yml> down [--rmi all --volumes]
+     		       			# stop a container with docker-compose
+					# and optionally remove used images and
+					# volumes
+sudo docker system prune -a		# remove all (-a) unused Docker objects
+
+
+# SSH
+ssh-keygen -t ed25519 -C "<email>"	# generate a SSH public key
+cat ~/.ssh/id_ed25519.pub		# show the generated SSH public key
