@@ -251,6 +251,8 @@
       '(("IN-PROGRESS" . "red")))
 
 ;; Markdown mode.
+;; REQUIRES: markdown command line tool, which can be installed with
+;; brew install markdown
 (unless (package-installed-p 'markdown-mode)
   (package-refresh-contents)
   (package-install 'markdown-mode))
