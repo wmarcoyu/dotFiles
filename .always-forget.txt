@@ -284,6 +284,7 @@ fr/frame v   			   	 # list all variables currently in scope
 
 # Docker
 docker ps				# list all running Docker containers
+docker logs <container-id-or-name>	# print container stdout and stderr
 sudo docker-compose -f <path-to-docker-compose-yml> build
      		       			# build a Docker image with docker-compose
 sudo docker-compose -f <path-to-docker-compose-yml> up
@@ -294,6 +295,18 @@ sudo docker-compose -f <path-to-docker-compose-yml> down [--rmi all --volumes]
 					# and optionally remove used images and
 					# volumes
 sudo docker system prune -a		# remove all (-a) unused Docker objects
+docker exec -it <container-id-or-name> /bin/bash
+       	    			        # open a bash terminal in the container
+
+
+# MongoDB
+mongosh					# open a MongoDB shell. If MongoDB is run in
+					# a Docker container, run the command after
+					# opening a container terminal.
+show dbs				# show all databases
+use <db-name>				# use a specific DB
+show collections 			# show all collections in a specific DB
+db.<collection-name>.find()		# find all documents in a collection
 
 
 # SSH
