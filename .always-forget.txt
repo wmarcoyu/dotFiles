@@ -63,7 +63,7 @@ MallocStackLogging=1 leaks -quiet -atExit -- ./TODO.exe
 # Algorithms.
 \begin{algorithm}[H]
 \begin{algorithmic}[1]
-	\Function{Find-Ind-Set}{$G = (V, E)$}
+        \Function{Find-Ind-Set}{$G = (V, E)$}
         \State{$S \gets \varnothing$}
         \For{$v\in V$}
         \State{Randomly sample a random real $r_v\in[0,1]$}
@@ -77,8 +77,8 @@ MallocStackLogging=1 leaks -quiet -atExit -- ./TODO.exe
 \end{algorithm}
 
 # A clickable table of contents.
-\usepackage[hidelinks]{hyperref}	# hidelinks hides the default red
-					# border around each clickable link
+\usepackage[hidelinks]{hyperref}        # hidelinks hides the default red
+                                        # border around each clickable link
 \begin{document}
 ...
 \tableofcontents
@@ -87,8 +87,8 @@ MallocStackLogging=1 leaks -quiet -atExit -- ./TODO.exe
 
 
 # xmake
-xmake project -k compile_commands	# create compile_commands.json for
-      	      	 			# language servers such as clangd
+xmake project -k compile_commands       # create compile_commands.json for
+                                        # language servers such as clangd
 
 
 # Python.
@@ -100,44 +100,45 @@ result = subprocess.run(
 print(result.stdout)
 # Disable pylint warnings.
 # pylint: disable=warning-name  # next to a code block
-# --disable=warning-name  	# when calling pylint
+# --disable=warning-name        # when calling pylint
 
 
 # JavaScript.
 # Disable eslint warnings.
-/* eslint-disable warning-name  */	  # at the top of a file
+/* eslint-disable warning-name  */        # at the top of a file
 // eslint-disable-next-line warning-name  # for next line
 
 
 # Linux commands.
-tree -I "dir1|dir2|dir3|..."	      # ignore multiple directories
-ps -ax | ag [keyword]	      	      # list processes and seach for keyword
+tree -I "dir1|dir2|dir3|..."          # ignore multiple directories
+ps -ax | ag [keyword]                 # list processes and seach for keyword
 find /parent/dir/ -name "<filename>"  # search for a file with <filename>
-     		  		      # under /parent/dir/. <filename> can
-				      # contain wildcards.
-grep [-r] <keyword> <dir>	      # search for <keyword> in all files under
-     	  	    		      # the current directory. [-r] allows for
-				      # search in subdirectories as well.
-bear -- make			      # generate compile_commands.json out of
-     				      # a Makefile.
+                                      # under /parent/dir/. <filename> can
+                                      # contain wildcards.
+grep [-r] <keyword> <dir>             # search for <keyword> in all files under
+                                      # the current directory. [-r] allows for
+                                      # search in subdirectories as well.
+bear -- make                          # generate compile_commands.json out of
+                                      # a Makefile.
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..  # generate compile_commands.json
-      					     # with cmake
-df -h				      # generate a high-level overview of file
-   				      # system usage; useful to check the usage
-				      # percentage of each partition
-du -h [root-directory]		      # generate the size of each file/subdirectory
-      				      # recursively under [root-directory], which
-				      # is by default the current directory (.)
+                                             # with cmake
+df -h                                 # generate a high-level overview of file
+                                      # system usage; useful to check the usage
+                                      # percentage of each partition
+du -h [root-directory]                # generate the size of each file/subdirectory
+                                      # recursively under [root-directory], which
+                                      # is by default the current directory (.)
 du -h --max-depth=n [root-directory]  # same thing as above with a limit on the
-      		    		      # recursive depth. n being 1 is perhaps
-				      # the most useful, which is an overview of
-				      # [root-directory] (. by default)
-du -sh [root-directory] 	      # generate the size of [root-directory]
-       				      # itself (-s meaning summary) (. by default)
-sudo -l				      # check if current user has sudo access
-ping -c 4 8.8.8.8		      # ping Google DNS server to check connectivity
+                                      # recursive depth. n being 1 is perhaps
+                                      # the most useful, which is an overview of
+                                      # [root-directory] (. by default)
+du -sh [root-directory]               # generate the size of [root-directory]
+                                      # itself (-s meaning summary) (. by default)
+sudo -l                               # check if current user has sudo access
+ping -c 4 8.8.8.8                     # ping Google DNS server to check connectivity
 sudo chown -R <username> <filename>   # recursively change the owner of <filename>
-     	      		 	      # to <username>
+                                      # to <username>
+lsof -i -P | ag/grep LISTEN           # list the ports in use
 
 
 # The Silver Searcher.
@@ -146,55 +147,55 @@ ag --ignore-dir dir1 --ignore-dir dir2 <content>  # ignore multiple directories
 ag -A 10 "keyword"   # search for "keyword" and show 10 lines after result
 ag -B 10 "keyword"   # search for "keyword" and show 10 lines before result
 ag -C 10 "keyword"   # search for "keyword" and show 10 lines before and after
-      	 	     # result (C for context)
+                     # result (C for context)
 
 
 # Common Emacs commands.
-C-x C-s	   # save buffer
+C-x C-s    # save buffer
 C-x C-c    # kill current Emacs process
-C-a 	   # go to the beginning of current line
-C-e 	   # go to the end of current line
+C-a        # go to the beginning of current line
+C-e        # go to the end of current line
 C-x C-;    # comment/uncomment current line
 C-x C-f    # find a file to open
 C-x C-b    # find a buffer to open
-C-s 	   # search a word
-C-r 	   # back-search a word
-C-g	   # abort current operation
-C-x 2	   # split the current window horizontally
-C-x 3	   # split the current window vertically
-C-x 0	   # close the window the cursor is in
-C-x 1 	   # close all other split windows except the one the cursor is in
+C-s        # search a word
+C-r        # back-search a word
+C-g        # abort current operation
+C-x 2      # split the current window horizontally
+C-x 3      # split the current window vertically
+C-x 0      # close the window the cursor is in
+C-x 1      # close all other split windows except the one the cursor is in
 C-x 5 2    # open current buffer in a new window
 C-x 5 0    # close a window opened by the previous command
 C-x 8 RET  # switch to Unicode input mode
 C-x space  # rectangle selection
-C-@ 	   # region selection
+C-@        # region selection
 C-x h      # select everything inside current buffer
 C-c n      # toggle directory tree view with neotree
-C-c C-c	   # change (enter) directory in neotree
-C-w 	   # cut
-C-k	   # cut current line after the cursor
-C-y	   # paste
-M-w	   # copy
+C-c C-c    # change (enter) directory in neotree
+C-w        # cut
+C-k        # cut current line after the cursor
+C-y        # paste
+M-w        # copy
 M-f        # move forward a word
-M-b	   # move backward a word
-M-}	   # move forward a paragraph
-M-{	   # move backward a paragraph
-M-> 	   # go to end of current buffer
-M-<	   # go to beginning of current buffer
+M-b        # move backward a word
+M-}        # move forward a paragraph
+M-{        # move backward a paragraph
+M->        # go to end of current buffer
+M-<        # go to beginning of current buffer
 M-/        # autocomplete
-M-x 	   # command prompt
-M-.	   # go to definition
+M-x        # command prompt
+M-.        # go to definition
 M-g g [n]  # go to line n
 
 ## Common M-x prompts (autocomplete with TAB)
-term			# open the built-in terminal
-beginning-of-buffer	# go to the beginning of the buffer
-end-of-buffer		# go to the end of the buffer
-kill-buffer		# kill current buffer (not window)
+term                    # open the built-in terminal
+beginning-of-buffer     # go to the beginning of the buffer
+end-of-buffer           # go to the end of the buffer
+kill-buffer             # kill current buffer (not window)
 
 ## Org mode.
-C-c C-c			# add a tag
+C-c C-c                 # add a tag
 *bold*
 /italic/
 =inline code=
@@ -203,65 +204,65 @@ C-c C-c			# add a tag
 A code snippet that can be run with C-c C-c
 #+END_SRC
 
-[[link][title]]	        # e.g. [[https://google.com][Google]] the link can be a url
-			# to a website or a local path that contains an image
-C-c C-o 		# click on the link
-C-c C-d			# deadline date
-C-c C-s			# scheduled date
-C-x m			# compose an email
-C-c C-c			# send the email
+[[link][title]]         # e.g. [[https://google.com][Google]] the link can be a url
+                        # to a website or a local path that contains an image
+C-c C-o                 # click on the link
+C-c C-d                 # deadline date
+C-c C-s                 # scheduled date
+C-x m                   # compose an email
+C-c C-c                 # send the email
 
 
 # Common Vim commands.
-h/j/k/l	   # left/down/up/right
-H/M/L	   # move to the top/middle/bottom of the screen
-e/b	   # move forward/backward a word
-0/$	   # move to the start/end of a line
-gg/G	   # move to the beginning/end of the file
-[n]gg	   # move to line n
-{/}	   # move upward/downward a paragraph
-zz	   # focus the cursor on the middle of the window
-H	   # focus the cursor on the top (High) of the window
-L	   # focus the cursor on the bottom (Low) of the window
+h/j/k/l    # left/down/up/right
+H/M/L      # move to the top/middle/bottom of the screen
+e/b        # move forward/backward a word
+0/$        # move to the start/end of a line
+gg/G       # move to the beginning/end of the file
+[n]gg      # move to line n
+{/}        # move upward/downward a paragraph
+zz         # focus the cursor on the middle of the window
+H          # focus the cursor on the top (High) of the window
+L          # focus the cursor on the bottom (Low) of the window
 /[keyword] # search for [keyword]
-n	   # go to the next occurrence AFTER a search
-N 	   # go to the previous occurrence AFTER a search
+n          # go to the next occurrence AFTER a search
+N          # go to the previous occurrence AFTER a search
 
-i/a	   # insert before/after the cursor
-I/A	   # move to the start/end of a line AND enter insert mode
+i/a        # insert before/after the cursor
+I/A        # move to the start/end of a line AND enter insert mode
 Ctrl + w   # delete word before the cursor
 Ctrl + j   # add a line break at the cursor position
-cc     	   # delete line
-dd	   # cut line
-C-y	   # select the current autocompletion suggestion
-C-n	   # go to next autocompletion suggestion
-C-p	   # go to previous autocompletion suggestion
+cc         # delete line
+dd         # cut line
+C-y        # select the current autocompletion suggestion
+C-n        # go to next autocompletion suggestion
+C-p        # go to previous autocompletion suggestion
 
-v	   # enter visual mode for region selection
-y	   # copy selected text
-c 	   $ cut selected text
-p 	   # paste the clipboard after cursor
-P	   # paste the clipboard before cursor
+v          # enter visual mode for region selection
+y          # copy selected text
+c          $ cut selected text
+p          # paste the clipboard after cursor
+P          # paste the clipboard before cursor
 
 
 
 # Git commands.
-git reset <filename>		# remove a file from the added list
-git branch -d <branch-name>	# delete a local branch
-git branch -D <branch-name>	# force delete a local branch
-git restore <filename>		# restore (remove) changes in a file
-git diff [filename]    		# view detailed changes in unstaged files
-git diff --staged [filename]	# view detailed changes in staged but not
-    	 			# yet committed files
+git reset <filename>            # remove a file from the added list
+git branch -d <branch-name>     # delete a local branch
+git branch -D <branch-name>     # force delete a local branch
+git restore <filename>          # restore (remove) changes in a file
+git diff [filename]             # view detailed changes in unstaged files
+git diff --staged [filename]    # view detailed changes in staged but not
+                                # yet committed files
 
 
 # AWS Linux commands.
-sudo systemctl start <service-name>	# start a service
-sudo systemctl stop <service-name>	# stop a service
-sudo systemctl restart <service-name>	# restart a service
-sudo systemctl reload <service-name>	# restart a service (no down time)
-sudo systemctl status <service-name>	# check service status
-sudo journalctl -xe 	      		# view detailed logs
+sudo systemctl start <service-name>     # start a service
+sudo systemctl stop <service-name>      # stop a service
+sudo systemctl restart <service-name>   # restart a service
+sudo systemctl reload <service-name>    # restart a service (no down time)
+sudo systemctl status <service-name>    # check service status
+sudo journalctl -xe                     # view detailed logs
 # After changes are made to service config files under /etc/systemd/system/,
 # reload daemon and restart the service(s) the changes correspond to.
 sudo systemctl daemon-reload
@@ -269,46 +270,49 @@ sudo systemctl restart <service-name>
 
 # Renew a certificate
 sudo certbot renew
-sudo systemctl reload nginx		# optional, but verify that the
-     	       	      			# certificate is indeed successfully
-					# renewed
-					# (https://www.ssllabs.com/ssltest/)
+sudo systemctl reload nginx             # optional, but verify that the
+                                        # certificate is indeed successfully
+                                        # renewed
+                                        # (https://www.ssllabs.com/ssltest/)
 
 
 # LLDB commands.
 settings set stop-line-count-before <n>  # show n line before the current line
 settings set stop-line-count-after <n>   # show n line after the current line
-process launch -- <arg1> <arg2> ...	 # start the debugger with arguments
-fr/frame v   			   	 # list all variables currently in scope
+process launch -- <arg1> <arg2> ...      # start the debugger with arguments
+fr/frame v                               # list all variables currently in scope
 
 
 # Docker
-docker ps				# list all running Docker containers
-docker logs <container-id-or-name>	# print container stdout and stderr
+docker ps                               # list all running Docker containers
+docker images                           # list all built Docker images
+docker logs <container-id-or-name>      # print container stdout and stderr
 sudo docker-compose -f <path-to-docker-compose-yml> build
-     		       			# build a Docker image with docker-compose
+                                        # build a Docker image with docker-compose
 sudo docker-compose -f <path-to-docker-compose-yml> up
-     		       			# run a Docker image
-docker stop <container-id-or-name>	# stop a container based on id/name
+                                        # run a Docker image
+docker stop <container-id-or-name>      # stop a container based on id/name
 sudo docker-compose -f <path-to-docker-compose-yml> down [--rmi all --volumes]
-     		       			# stop a container with docker-compose
-					# and optionally remove used images and
-					# volumes
-sudo docker system prune -a		# remove all (-a) unused Docker objects
+                                        # stop a container with docker-compose
+                                        # and optionally remove used images and
+                                        # volumes
+sudo docker system prune -a             # remove all (-a) unused Docker objects
 docker exec -it <container-id-or-name> /bin/bash
-       	    			        # open a bash terminal in the container
+                                        # open a bash terminal in the container
+cat <password-file> | docker login --username <uname> --password-stdin
+                                        # log into Docker at command-line
 
 
 # MongoDB
-mongosh					# open a MongoDB shell. If MongoDB is run in
-					# a Docker container, run the command after
-					# opening a container terminal.
-show dbs				# show all databases
-use <db-name>				# use a specific DB
-show collections 			# show all collections in a specific DB
-db.<collection-name>.find()		# find all documents in a collection
+mongosh                                 # open a MongoDB shell. If MongoDB is run in
+                                        # a Docker container, run the command after
+                                        # opening a container terminal.
+show dbs                                # show all databases
+use <db-name>                           # use a specific DB
+show collections                        # show all collections in a specific DB
+db.<collection-name>.find()             # find all documents in a collection
 
 
 # SSH
-ssh-keygen -t ed25519 -C "<email>"	# generate a SSH public key
-cat ~/.ssh/id_ed25519.pub		# show the generated SSH public key
+ssh-keygen -t ed25519 -C "<email>"      # generate a SSH public key
+cat ~/.ssh/id_ed25519.pub               # show the generated SSH public key
