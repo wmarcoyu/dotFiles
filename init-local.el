@@ -27,9 +27,9 @@
 ( when (eq system-type 'darwin)
     (defun set-frame-transparency (&optional frame)
       (let ((alpha '(90 . 90)))
-	(when frame
-	  (set-frame-parameter frame 'alpha alpha))
-	(add-to-list 'default-frame-alist `(alpha . ,alpha))))
+        (when frame
+          (set-frame-parameter frame 'alpha alpha))
+        (add-to-list 'default-frame-alist `(alpha . ,alpha))))
   ;; Apply transparency to the current frame
   (set-frame-transparency (selected-frame))
   ;; Ensure all future frames get the same transparency
@@ -207,7 +207,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+   '(grip-mode prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -251,27 +251,29 @@
       '(("IN-PROGRESS" . "red")))
 
 ;; Markdown mode.
-;; REQUIRES: markdown command line tool, which can be installed with
-;; brew install markdown
-(unless (package-installed-p 'markdown-mode)
-  (package-refresh-contents)
-  (package-install 'markdown-mode))
-(require 'markdown-mode)
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-;; Shortcut to preview a markdown file.
-(add-hook 'markdown-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c p") 'markdown-preview)))
-
-(use-package markdown-preview-mode
+;; REQUIRES: markdown and grip command-line tools, which can be installed with
+;; brew install markdown grip
+(use-package markdown-mode
   :ensure t
   :defer t
-)
+  :mode (("\\.markdown\\'" . markdown-mode)
+         ("\\.md\\'" . markdown-mode))
+  :init
+  (setq markdown-command "multimarkdown")
+  :hook ((markdown-mode . (lambda ()
+                            (local-set-key (kbd "C-c p") 'markdown-preview)))))
 
-(add-hook 'markdown-mode-hook 'markdown-preview-mode)
-(setq markdown-preview-stylesheets (list ""))
+;; Grip mode setup for GitHub-like preview
+(use-package grip-mode
+  :ensure t
+  :defer t
+  :init
+  (setq grip-update-after-change nil)
+  ;; Optionally set GitHub user/token if needed
+  ;; (setq grip-github-user "your-github-username")
+  ;; (setq grip-github-password "your-github-token")
+  :hook (markdown-mode . grip-mode)
+)
 
 ;; Latex tools.
 (use-package tex
@@ -431,3 +433,17 @@
   :hook ((vue-mode . prettier-js-mode)
          (typescript-mode . prettier-js-mode))
 )
+
+;; Untabify the current buffer upon save unless it's a Makefile.
+(defun untabify-buffer ()
+  "Untabify the entire buffer."
+  (interactive)
+  (untabify (point-min) (point-max))
+)
+(defun untabify-before-save ()
+  "Untabify the current buffer, except in `makefile-mode`."
+  (interactive)
+  (unless (derived-mode-p 'makefile-mode)
+    (untabify-buffer))
+)
+(add-hook 'before-save-hook 'untabify-before-save)
