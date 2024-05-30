@@ -187,6 +187,10 @@ M-/        # autocomplete
 M-x        # command prompt
 M-.        # go to definition
 M-g g [n]  # go to line n
+C-x 8 ' a  # type Spanish character á
+C-x 8 ~ n  # type Spanish character ñ
+C-x 8 " u  # type Spanish character ü
+C-x 8 RET 00BF    # type inverted question mark ¿
 
 ## Common M-x prompts (autocomplete with TAB)
 term                    # open the built-in terminal
