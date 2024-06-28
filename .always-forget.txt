@@ -213,6 +213,7 @@ C-c C-c                 # add a tag
 *bold*
 /italic/
 =inline code=
++strikethrough+
 
 #+BEGIN_SRC [language]
 A code snippet that can be run with C-c C-c
@@ -268,6 +269,7 @@ git restore <filename>          # restore (remove) changes in a file
 git diff [filename]             # view detailed changes in unstaged files
 git diff --staged [filename]    # view detailed changes in staged but not
                                 # yet committed files
+git revert <commit-hash>        # revert a commit
 
 
 # AWS Linux commands.
@@ -299,7 +301,7 @@ fr/frame v                               # list all variables currently in scope
 
 
 # Docker
-docker ps                               # list all running Docker containers
+docker ps [-a]                          # list all running Docker containers
 docker images                           # list all built Docker images
 docker logs <container-id-or-name>      # print container stdout and stderr
 sudo docker-compose -f <path-to-docker-compose-yml> build
@@ -311,11 +313,14 @@ sudo docker-compose -f <path-to-docker-compose-yml> down [--rmi all --volumes]
                                         # stop a container with docker-compose
                                         # and optionally remove used images and
                                         # volumes
-sudo docker system prune -a             # remove all (-a) unused Docker objects
+sudo docker system prune -a -f          # remove all (-a) unused Docker objects
+                                        # without asking for password (-f)
 docker exec -it <container-id-or-name> /bin/bash
                                         # open a bash terminal in the container
 cat <password-file> | docker login --username <uname> --password-stdin
                                         # log into Docker at command-line
+docker volume ls                        # list all Docker volumes
+docker volume rm <volume-name>          # remove a Docker volume
 
 
 # MongoDB
