@@ -245,9 +245,27 @@
 
 ;; Add IN-PROGRESS keyword to org mode.
 (setq org-todo-keywords
-      '((sequence "TODO" "IN-PROGRESS" "DONE")))
-(setq org-todo-keyword-faces
-      '(("IN-PROGRESS" . "red")))
+      '((sequence "TODO" "IN-PROGRESS" "DONE"))
+
+      org-todo-keyword-faces
+      '(
+        ("TODO" . (:foreground "pink" :weight bold :box nil))
+        ("IN-PROGRESS" . (:foreground "red" :weight bold :box nil))
+        ("DONE" . (:foreground "YellowGreen" :weight bold :box nil))
+       )
+)
+;; Customize header faces.
+(custom-set-faces
+ '(org-headline-done ((t (:foreground "SlateGray4" :strike-through t))))
+ '(org-level-1 ((t (:foreground "DarkGoldenrod2" :weight bold))))
+ '(org-level-2 ((t (:foreground "SteelBlue2"))))
+ '(org-level-3 ((t (:foreground "MediumPurple2"))))
+ ;; '(org-level-4 ((t (:foreground "magenta" :weight bold))))
+ ;; '(org-level-5 ((t (:foreground "orange" :weight bold))))
+ ;; '(org-level-6 ((t (:foreground "blue" :weight bold))))
+ ;; '(org-level-7 ((t (:foreground "red" :weight bold))))
+ ;; '(org-level-8 ((t (:foreground "purple" :weight bold))))
+ )
 
 ;; Markdown mode.
 ;; REQUIRES: markdown and grip command-line tools, which can be installed with
