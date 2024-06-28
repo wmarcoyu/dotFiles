@@ -101,6 +101,14 @@ print(result.stdout)
 # Disable pylint warnings.
 # pylint: disable=warning-name  # next to a code block
 # --disable=warning-name        # when calling pylint
+pip install --upgrade pip             # update pip
+pip install --upgrade -r requirements.txt
+                                      # update packages in requirements.txt
+
+
+# npm
+npm install                               # install/update packages in package.json
+npm audit fix                             # automatically fix vulnerabilities
 
 
 # JavaScript.
@@ -139,6 +147,8 @@ ping -c 4 8.8.8.8                     # ping Google DNS server to check connecti
 sudo chown -R <username> <filename>   # recursively change the owner of <filename>
                                       # to <username>
 lsof -i -P | ag/grep LISTEN           # list the ports in use
+caffeinate -d -t 3600                 # (MacOS) prevent the display (-d) from
+                                      # sleeping for 3600 seconds
 
 
 # The Silver Searcher.
@@ -273,6 +283,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart <service-name>
 
 # Renew a certificate
+sudo certbot certificates               # show certificates information
 sudo certbot renew
 sudo systemctl reload nginx             # optional, but verify that the
                                         # certificate is indeed successfully
