@@ -1,8 +1,24 @@
 ;;; package --- Summary My Emacs configuration file.
 ;;;
+;;; Commentary:
 ;;; Thanks to Andrew DeOrio -
 ;;; his entire init.el here:
 ;;; https://github.com/awdeorio/dotfiles/blob/master/.emacs.d/init.el
+;;;
+;;; Code:
+
+;; Remove scrollbars, menu bars, and toolbars EARLY
+(defun disable-ui-elements ()
+  "Disable menu bar, tool bar, and scroll bar."
+  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)))
+(disable-ui-elements)
+;; Disable UI elements for new frames as well
+(add-hook 'after-make-frame-functions
+          (lambda (frame)
+            (with-selected-frame frame
+              (disable-ui-elements))))
 
 ;; Add MELPA to package archive list.
 (require 'package)
@@ -10,54 +26,43 @@
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 
+;; Ensure use-package is installed
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+
+;; Basic configurations
+(setq inhibit-startup-message t)      ; don't show a startup message
+(setq line-number-mode t)             ; show line numbers
+(setq column-number-mode t)           ; show column numbers
+(global-font-lock-mode t)             ; show syntax highlighting
+(setq-default transient-mark-mode t)  ; highlight marked regions
+(electric-pair-mode 1)                ; automatically close parentheses, etc.
+(show-paren-mode t)                   ; show matching parentheses
+(setq scroll-step 1)                  ; smmoth scroll line by line
+(setq tab-width 4)                    ; set tab width to 4 spaces
+(global-display-line-numbers-mode)    ; display line numbers
+;; (fringe-mode 0)
+
 ;; Modified keyboard shortcuts
 (global-set-key "\C-x\C-b"                          'electric-buffer-list)
 (global-set-key "\M-o"                              'other-window)
 (global-set-key "\C-x\C-o"                          'other-frame)
 (global-set-key (kbd "C-c r")                       'revert-buffer)
 
-;; Don't show a startup message
-(setq inhibit-startup-message t)
-
-;; Show line and column numbers
-(setq line-number-mode t)
-(setq column-number-mode t)
-
 ;; Let's be a little transparent (on macOS).
 ( when (eq system-type 'darwin)
-    (defun set-frame-transparency (&optional frame)
-      (let ((alpha '(90 . 90)))
-        (when frame
-          (set-frame-parameter frame 'alpha alpha))
-        (add-to-list 'default-frame-alist `(alpha . ,alpha))))
+  (defun set-frame-transparency (&optional frame)
+    (let ((alpha '(90 . 90)))
+      (when frame
+        (set-frame-parameter frame 'alpha alpha))
+      (add-to-list 'default-frame-alist `(alpha . ,alpha))))
   ;; Apply transparency to the current frame
   (set-frame-transparency (selected-frame))
   ;; Ensure all future frames get the same transparency
   (add-hook 'after-make-frame-functions 'set-frame-transparency)
- )
-
-;; Show syntax highlighting
-(global-font-lock-mode t)
-
-;; Highlight marked regions
-(setq-default transient-mark-mode t)
-
-;; Parentheses
-(electric-pair-mode 1)                  ; automatically close parentheses, etc.
-(show-paren-mode t)                     ; show matching parentheses
-
-;; Smooth scrolling (one line at a time)
-(setq scroll-step 1)
-
-;; Tab settings: 4 spaces.
-(setq tab-width 4)
-
-;; Check if the use-package package is installed and install it if not.
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile
-  (require 'use-package))
+  )
 
 ;; Intellisense syntax checking
 (use-package flycheck
@@ -68,12 +73,7 @@
 
   :ensure t
   :defer t
-)
-
-;; Remove scrollbars, menu bars, and toolbars
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  )
 
 ;; Dialog settings.  No more typing the whole yes or no. Just y or n
 ;; will do. Disable GUI dialogs and use emacs text interface.
@@ -85,10 +85,13 @@
 (setq mac-option-modifier 'super) ; Option == Super
 
 ;; Highlight characters beyond 90 columns.
-(require 'whitespace)
-(setq whitespace-style '(face lines-tail))
-(setq whitespace-line-column 90)
-(add-hook 'prog-mode-hook 'whitespace-mode)
+(use-package whitespace
+  :ensure nil  ;; `whitespace` is a built-in package, so no need to install it
+  :defer t
+  :hook (prog-mode . whitespace-mode)
+  :config
+  (setq whitespace-style '(face lines-tail))
+  (setq whitespace-line-column 90))
 
 ;; Disable auto-backup files.
 (setq make-backup-files nil)
@@ -104,10 +107,11 @@
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;; Enable elpy for Python development.
-(unless (package-installed-p 'elpy)
-  (package-refresh-contents)
-  (package-install 'elpy))
-(elpy-enable)
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
 
 ;; C++ autocomplete.
 (use-package lsp-mode
@@ -132,20 +136,15 @@
 (setq-default c-basic-offset 2)
 
 ;; Color theme.
-(unless (package-installed-p 'darcula-theme)
-  (package-refresh-contents)
-  (package-install 'darcula-theme))
-(load-theme 'darcula t)
+;; (use-package darcula-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'darcula t))
 
-;; (use-package spacemacs-common
-;;     :ensure spacemacs-theme
-;;     :defer t
-;;     )
-;; (load-theme 'spacemacs-dark t)
-
-;; Show line numbers and disable the fringe.
-(global-display-line-numbers-mode)
-(fringe-mode 0)
+(use-package jetbrains-darcula-theme
+  :ensure t
+  :config
+  (load-theme 'jetbrains-darcula t))
 
 ;; Customize highlighting of TODO keywords
 (add-hook 'prog-mode-hook
@@ -200,14 +199,14 @@
 (use-package all-the-icons
   :ensure t
   :defer t
-)
+  )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(grip-mode prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+   '(editorconfig auctex esup grip-mode prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -273,13 +272,13 @@
   ;; (setq grip-github-user "your-github-username")
   ;; (setq grip-github-password "your-github-token")
   :hook (markdown-mode . grip-mode)
-)
+  )
 
 ;; Latex tools.
 (use-package tex
   :ensure auctex
   :defer t
-)
+  )
 
 ;; Set pdf tools as the default viewer.
 (setq TeX-view-program-selection '((output-pdf "pdf-tools"))
@@ -309,28 +308,6 @@
   :after lsp
   :config (add-hook 'java-mode-hook 'lsp))
 
-;; Rust Development.
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
-(unless (package-installed-p 'rust-mode)
-  (package-refresh-contents)
-  (package-install 'rust-mode))
-
-(add-hook 'rust-mode-hook
-          (lambda () (setq indent-tabs-mode nil)))
-
-(unless (package-installed-p 'cargo)
-  (package-refresh-contents)
-  (package-install 'cargo))
-(add-hook 'rust-mode-hook 'cargo-minor-mode)
-
-;; Flycheck for Rust.
-(unless (package-installed-p 'flycheck)
-  (package-refresh-contents)
-  (package-install 'flycheck))
-(add-hook 'rust-mode-hook 'flycheck-mode)
-
 ;; Remote editing with Tramp.
 (use-package tramp
   :config
@@ -345,18 +322,18 @@
          ))
   (setq tramp-use-ssh-controlmaster-options nil)
   :defer t
-)
+  )
 
 ;; GitHub Copilot requirements.
 (use-package dash
   :ensure t
   :defer t
-)
+  )
 
 (use-package s
   :ensure t
   :defer t
-)
+  )
 
 (use-package editorconfig
   :ensure t
@@ -367,27 +344,22 @@
 (use-package f
   :ensure t
   :defer t
-)
+  )
 ;; GitHub Copilot.
-(add-to-list 'load-path "~/.emacs.d/copilot.el")
-(require 'copilot)
-;; you can utilize :map :hook and :config to customize copilot
-(add-hook 'prog-mode-hook 'copilot-mode)
-(define-key copilot-completion-map (kbd "\C-x\C-y") 'copilot-accept-completion)
-(setq copilot-indent-offset-warning-disable t)
-
-;; Run Python code in org-mode.
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t))) ;; Make sure Python is enabled
-(setq org-babel-python-command "python3")
+(use-package copilot
+  :load-path "~/.emacs.d/copilot.el"
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("C-x C-y" . copilot-accept-completion))
+  :config
+  (setq copilot-indent-offset-warning-disable t))
 
 ;; YAML mode.
 (use-package yaml-mode
   :mode "\\.yml\\'"
   :ensure t
   :defer t
-)
+  )
 
 ;; Vue mode.
 (use-package vue-mode
@@ -401,7 +373,7 @@
               (setq js-indent-level 2)
               (setq css-indent-offset 2)
               (setq tab-width 2)))
-)
+  )
 
 ;; TypeScript mode.
 (use-package typescript-mode
@@ -410,7 +382,7 @@
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2)
-)
+  )
 
 ;; LSP for Vue and TypeScript.
 (use-package lsp-mode
@@ -419,12 +391,12 @@
   :hook ((vue-mode . lsp)
          (typescript-mode . lsp))
   :commands lsp
-)
+  )
 (use-package lsp-ui
   :ensure t
   :defer t
   :commands lsp-ui-mode
-)
+  )
 
 ;; Prettier for Vue and TypeScript.
 (use-package prettier-js
@@ -432,18 +404,32 @@
   :defer t
   :hook ((vue-mode . prettier-js-mode)
          (typescript-mode . prettier-js-mode))
-)
+  )
 
 ;; Untabify the current buffer upon save unless it's a Makefile.
 (defun untabify-buffer ()
   "Untabify the entire buffer."
   (interactive)
   (untabify (point-min) (point-max))
-)
+  )
 (defun untabify-before-save ()
   "Untabify the current buffer, except in `makefile-mode`."
   (interactive)
   (unless (derived-mode-p 'makefile-mode)
     (untabify-buffer))
-)
+  )
 (add-hook 'before-save-hook 'untabify-before-save)
+
+;; Print Emacs startup time.
+(defun print-startup-stats ()
+  "Print Emacs startup statistics."
+  (message "Emacs ready in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                    (time-subtract after-init-time before-init-time)))
+           gcs-done))
+(add-hook 'emacs-startup-hook 'print-startup-stats)
+
+(setq esup-depth 0)
+
+;;; init.el ends here
