@@ -34,13 +34,17 @@ alias brv='open -a "Brave Browser"'
 alias we='open -a WeChat'
 alias conf='e ~/.zshrc'
 alias ck='open -a "Activity Monitor"'
-alias getlatextemplate='cp ~/wmarcoyu/math/template.tex template.tex'
+alias getlatextemplate='cp ~/wmarcoyu/latex/template.tex template.tex'
 alias mkae='make'
 alias af='e ~/wmarcoyu/dotFiles/.always-forget.txt'
 alias saf='cat ~/wmarcoyu/dotFiles/.always-forget.txt'
 alias notes='e ~/wmarcoyu/cs-notes.md'
 alias cppcompile='g++ -std=c++17 -Wall -Werror -pedantic -g \
 -fsanitize=address -fsanitize=undefined'
+alias hola='cd ~/wmarcoyu/Spanish/'
+alias getgitignore='cp ~/wmarcoyu/dotfiles/.gitignore .gitignore'
+alias venv='source env/bin/activate'
+alias cafe='caffeinate'
 
 # Git shortcuts
 alias gs='git status'
@@ -53,13 +57,16 @@ alias gb='git branch'
 alias gco='git checkout'
 alias gl='git log'
 alias gsw='git switch'
-alias getgitignore='cp ~/wmarcoyu/dotfiles/.gitignore .gitignore'
-alias venv='source env/bin/activate'
 
 # Emacs
 e ()
 {
   emacs "$@" &
+}
+
+ec ()
+{
+  emacsclient -c "$@" &
 }
 
 # Colorize ls output.
@@ -100,6 +107,8 @@ alias run='opt -disable-output \
 -passes="program-variable"'
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
 # >>> xmake >>>
 test -f "/Users/yuwang/.xmake/profile" && source "/Users/yuwang/.xmake/profile"
