@@ -92,25 +92,11 @@
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 
-;; C++ autocomplete.
-(use-package lsp-mode
-  :ensure t
-  :defer t
-  :hook (c++-mode . lsp)
-  :commands lsp
-  :config
-  (setq lsp-prefer-flymake nil))
-
 (use-package yasnippet
   :ensure t
   :defer t
   :config
   (yas-global-mode 1))
-
-(use-package lsp-ui
-  :ensure t
-  :defer t
-  :commands lsp-ui-mode)
 
 (setq-default c-basic-offset 2)
 
@@ -228,19 +214,6 @@
  ;; '(org-level-8 ((t (:foreground "purple" :weight bold))))
  )
 
-;; Java Intellisense.
-(use-package lsp-mode
-  :ensure t
-  :defer t
-  :commands (lsp lsp-deferred)
-  :hook (java-mode . lsp-deferred))
-
-(use-package lsp-java
-  :ensure t
-  :defer t
-  :after lsp
-  :config (add-hook 'java-mode-hook 'lsp))
-
 ;; YAML mode.
 (use-package yaml-mode
   :mode "\\.yml\\'"
@@ -269,20 +242,6 @@
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2)
-  )
-
-;; LSP for Vue and TypeScript.
-(use-package lsp-mode
-  :ensure t
-  :defer t
-  :hook ((vue-mode . lsp)
-         (typescript-mode . lsp))
-  :commands lsp
-  )
-(use-package lsp-ui
-  :ensure t
-  :defer t
-  :commands lsp-ui-mode
   )
 
 ;; Prettier for Vue and TypeScript.
