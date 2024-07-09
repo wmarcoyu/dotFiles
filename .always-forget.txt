@@ -142,10 +142,16 @@ du -h --max-depth=n [root-directory]  # same thing as above with a limit on the
                                       # [root-directory] (. by default)
 du -sh [root-directory]               # generate the size of [root-directory]
                                       # itself (-s meaning summary) (. by default)
-sudo -l                               # check if current user has sudo access
 ping -c 4 8.8.8.8                     # ping Google DNS server to check connectivity
-sudo chown -R <username> <filename>   # recursively change the owner of <filename>
-                                      # to <username>
+sudo -l                               # check if current user has sudo access
+su [username]                         # switch to another user [username] and to root
+                                      # if [username] is not provided
+chmod <mode> <filename>               # change the mode of <filename> to <mode>
+                                      # mode: owner-group-others
+                                      # 4: read, 2: write, 1: execute
+chown [-R] <username> <filename>      # change the owner of <filename>
+                                      # to <username> [recursively]
+chgrp <group> <filename>              # change the group of <filename> to <group>
 lsof -i -P | ag/grep LISTEN           # list the ports in use
 caffeinate -d -t 3600                 # (MacOS) prevent the display (-d) from
                                       # sleeping for 3600 seconds
@@ -201,6 +207,8 @@ C-x 8 ' a  # type Spanish character á
 C-x 8 ~ n  # type Spanish character ñ
 C-x 8 " u  # type Spanish character ü
 C-x 8 RET 00BF    # type inverted question mark ¿
+C-x r             # (M-x revert-buffer) reload the buffer from file
+M-x eval-buffer   # evaluate the Lisp expressions in the current buffer
 
 ## Common M-x prompts (autocomplete with TAB)
 term                    # open the built-in terminal
@@ -301,26 +309,29 @@ fr/frame v                               # list all variables currently in scope
 
 
 # Docker
-docker ps [-a]                          # list all running Docker containers
+docker ps [-a]                          # list [all] existing Docker containers
 docker images                           # list all built Docker images
 docker logs <container-id-or-name>      # print container stdout and stderr
-sudo docker-compose -f <path-to-docker-compose-yml> build
+docker-compose -f <path-to-docker-compose-yml> build
                                         # build a Docker image with docker-compose
-sudo docker-compose -f <path-to-docker-compose-yml> up
-                                        # run a Docker image
+docker-compose -f <path-to-docker-compose-yml> up [-d]
+                                        # run a Docker image out of a docker-compose
+                                        # file (-f) [in the background (-d)]
 docker stop <container-id-or-name>      # stop a container based on id/name
 sudo docker-compose -f <path-to-docker-compose-yml> down [--rmi all --volumes]
                                         # stop a container with docker-compose
                                         # and optionally remove used images and
                                         # volumes
-sudo docker system prune -a -f          # remove all (-a) unused Docker objects
-                                        # without asking for password (-f)
 docker exec -it <container-id-or-name> /bin/bash
                                         # open a bash terminal in the container
 cat <password-file> | docker login --username <uname> --password-stdin
                                         # log into Docker at command-line
 docker volume ls                        # list all Docker volumes
+docker rm <container-id-or-name>        # remove a Docker container
+docker rmi <image-id-or-name>           # remove a Docker image
 docker volume rm <volume-name>          # remove a Docker volume
+sudo docker system prune -af            # remove all (-a) unused Docker objects
+                                        # without asking for password (-f)
 
 
 # MongoDB
