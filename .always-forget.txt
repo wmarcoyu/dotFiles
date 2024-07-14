@@ -155,6 +155,12 @@ chgrp <group> <filename>              # change the group of <filename> to <group
 lsof -i -P | ag/grep LISTEN           # list the ports in use
 caffeinate -d -t 3600                 # (MacOS) prevent the display (-d) from
                                       # sleeping for 3600 seconds
+sudo usermod -aG <group> ${USER}      # add current user to <group> / join
+                                      # <group> as the current user
+newgrp <group>                        # start a new shell with <group> being the
+                                      # current effective group
+groups                                # list all groups the current user is in
+id -gn                                # print the effective group (-g) name (-n)
 
 
 # The Silver Searcher.
