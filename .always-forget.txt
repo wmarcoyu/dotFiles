@@ -161,6 +161,21 @@ newgrp <group>                        # start a new shell with <group> being the
                                       # current effective group
 groups                                # list all groups the current user is in
 id -gn                                # print the effective group (-g) name (-n)
+sudo ufw status verbose               # list all firewall rules
+sudo ufw allow <port>                 # allow traffic to a port
+sudo ufw reload                       # reload the firewall to update its
+                                      # configuration
+sudo ufw status numbered              # list all firewall rules with their
+                                      # corresponding numbers
+sudo ufw delete <number>              # remove an entry from the table by its number
+top                                   # list current processes sorted by CPU usage
+                                      # press M: sort by memory usage
+                                      # press P: sort by CPU usage
+                                      # press q: quit
+netstat -lntu                         # list all listenting (-l) ports and their
+                                      # associated services
+                                      # -n: port number
+                                      # -tu: TCP and UDP
 
 
 # The Silver Searcher.
@@ -253,7 +268,7 @@ gg/G       # move to the beginning/end of the file
 zz         # focus the cursor on the middle of the window
 H          # focus the cursor on the top (High) of the window
 L          # focus the cursor on the bottom (Low) of the window
-/[keyword] # search for [keyword]
+/<keyword> # search for <keyword>
 n          # go to the next occurrence AFTER a search
 N          # go to the previous occurrence AFTER a search
 
@@ -272,7 +287,6 @@ y          # copy selected text
 c          $ cut selected text
 p          # paste the clipboard after cursor
 P          # paste the clipboard before cursor
-
 
 
 # Git commands.
@@ -338,6 +352,9 @@ docker rmi <image-id-or-name>           # remove a Docker image
 docker volume rm <volume-name>          # remove a Docker volume
 sudo docker system prune -af            # remove all (-a) unused Docker objects
                                         # without asking for password (-f)
+docker network ls                       # list all Docker networks
+docker inspect <container/image/volume/network>
+                                        # inspect a container/image/volume/network
 
 
 # MongoDB
