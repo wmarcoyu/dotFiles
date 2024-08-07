@@ -293,6 +293,8 @@
   )
 
 ;; Latex tools.
+;; REQUIRES: a TeX distribution, such as MacTeX, which can be installed with
+;; `brew install --cask mactex`.
 (use-package tex
   :ensure auctex
   :defer t
