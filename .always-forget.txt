@@ -271,6 +271,8 @@ L          # focus the cursor on the bottom (Low) of the window
 /<keyword> # search for <keyword>
 n          # go to the next occurrence AFTER a search
 N          # go to the previous occurrence AFTER a search
+u          # undo previous action
+C-r        # redo previous action
 
 i/a        # insert before/after the cursor
 I/A        # move to the start/end of a line AND enter insert mode
