@@ -5,6 +5,8 @@
 ;;; his entire init.el here:
 ;;; https://github.com/awdeorio/dotfiles/blob/master/.emacs.d/init.el
 ;;;
+;;; TODO: run `M-x package-initialize` upon first startup.
+;;;
 ;;; Code:
 
 ;; Remove scrollbars, menu bars, and toolbars EARLY
@@ -22,6 +24,8 @@
 
 ;; Add MELPA to package archive list.
 (require 'package)
+;; NOTE: this line is necessary for MELPA to work with Emacs 26.3.
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
