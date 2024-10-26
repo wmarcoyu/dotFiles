@@ -230,6 +230,9 @@ C-x 8 " u  # type Spanish character ü
 C-x 8 RET 00BF    # type inverted question mark ¿
 C-x r             # (M-x revert-buffer) reload the buffer from file
 M-x eval-buffer   # evaluate the Lisp expressions in the current buffer
+M-:               # shortcut for M-x eval
+C-x C-q           # toggle read-only mode for the current buffer
+C-u M-!           # execute a shell command, e.g. date, and write the output
 
 ## Common M-x prompts (autocomplete with TAB)
 term                    # open the built-in terminal
@@ -248,6 +251,8 @@ C-c C-c                 # add a tag
 A code snippet that can be run with C-c C-c
 #+END_SRC
 
+src_<language>{an inline code snippet}
+
 [[link][title]]         # e.g. [[https://google.com][Google]] the link can be a url
                         # to a website or a local path that contains an image
 C-c C-o                 # click on the link
@@ -255,6 +260,9 @@ C-c C-d                 # deadline date
 C-c C-s                 # scheduled date
 C-x m                   # compose an email
 C-c C-c                 # send the email
+shift-left/right        # change the style of a list
+M-left/right            # indent a subheading
+M-up/down               # reorder items in a list (also works for subheadings)
 
 
 # Common Vim commands.
@@ -328,6 +336,10 @@ settings set stop-line-count-before <n>  # show n line before the current line
 settings set stop-line-count-after <n>   # show n line after the current line
 process launch -- <arg1> <arg2> ...      # start the debugger with arguments
 fr/frame v                               # list all variables currently in scope
+
+
+# GDB commands.
+set args <arg1> <arg2> ...              # set input arguments
 
 
 # Docker

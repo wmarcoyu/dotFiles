@@ -43,6 +43,7 @@
 (setq scroll-step 1)                  ; smmoth scroll line by line
 (setq tab-width 4)                    ; set tab width to 4 spaces
 (global-display-line-numbers-mode)    ; display line numbers
+(global-visual-line-mode t)           ; wrap lines at word boundaries
 ;; (fringe-mode 0)
 
 ;; Modified keyboard shortcuts
@@ -206,13 +207,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(editorconfig auctex esup grip-mode prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+   '(org-bullets editorconfig auctex esup grip-mode prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(org-headline-done ((t (:foreground "SlateGray4"))))
+ '(org-level-1 ((t (:foreground "DarkGoldenrod2" :weight bold))))
+ '(org-level-2 ((t (:foreground "SteelBlue2"))))
+ '(org-level-3 ((t (:foreground "MediumPurple2")))))
 
 ;; Web Development
 (use-package web-mode
@@ -255,17 +259,7 @@
        )
 )
 ;; Customize header faces.
-(custom-set-faces
- '(org-headline-done ((t (:foreground "SlateGray4" :strike-through t))))
- '(org-level-1 ((t (:foreground "DarkGoldenrod2" :weight bold))))
- '(org-level-2 ((t (:foreground "SteelBlue2"))))
- '(org-level-3 ((t (:foreground "MediumPurple2"))))
- ;; '(org-level-4 ((t (:foreground "magenta" :weight bold))))
- ;; '(org-level-5 ((t (:foreground "orange" :weight bold))))
- ;; '(org-level-6 ((t (:foreground "blue" :weight bold))))
- ;; '(org-level-7 ((t (:foreground "red" :weight bold))))
- ;; '(org-level-8 ((t (:foreground "purple" :weight bold))))
- )
+
 
 ;; Markdown mode.
 ;; REQUIRES: markdown and grip command-line tools, which can be installed with
@@ -293,8 +287,6 @@
   )
 
 ;; Latex tools.
-;; REQUIRES: a TeX distribution, such as MacTeX, which can be installed with
-;; `brew install --cask mactex`.
 (use-package tex
   :ensure auctex
   :defer t
@@ -426,6 +418,12 @@
          (typescript-mode . prettier-js-mode))
   )
 
+;; Go mode.
+(use-package go-mode
+  :ensure t
+  :defer t
+  )
+
 ;; Untabify the current buffer upon save unless it's a Makefile.
 (defun untabify-buffer ()
   "Untabify the entire buffer."
@@ -451,5 +449,24 @@
 (add-hook 'emacs-startup-hook 'print-startup-stats)
 
 (setq esup-depth 0)
+
+(use-package multiple-cursors
+  :defer t
+  :ensure t)
+;; Multiple cursor bindings
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; Org mode
+(use-package org
+  :defer t
+  :hook (org-mode . org-indent-mode))
+
+;; org-bullets
+(use-package org-bullets
+  :ensure t
+  :defer t
+  :hook (org-mode . org-bullets-mode))
 
 ;;; init.el ends here
