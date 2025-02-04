@@ -85,6 +85,11 @@ MallocStackLogging=1 leaks -quiet -atExit -- ./TODO.exe
 ...
 \end{document}
 
+# Set a local region with line spacing being x.
+\begin{spacing}{x}
+...
+\end{spacing}
+
 
 # xmake
 xmake project -k compile_commands       # create compile_commands.json for
@@ -176,6 +181,12 @@ netstat -lntu                         # list all listenting (-l) ports and their
                                       # associated services
                                       # -n: port number
                                       # -tu: TCP and UDP
+brew install <package>                # install a package with homebrew
+brew search <package>                 # search for a package in homebrew
+brew info <package>                   # show descriptions of a homebrew package
+brew update                           # update homebrew itself
+brew upgrade <package>                # update a package installed via homebrew
+brew list                             # list all packages installed via homebrew
 
 
 # The Silver Searcher.
@@ -195,6 +206,7 @@ C-e        # go to the end of current line
 C-x C-;    # comment/uncomment current line
 C-x C-f    # find a file to open
 C-x C-b    # find a buffer to open
+C-x C-u    # convert selected text to upper case
 C-s        # search a word
 C-r        # back-search a word
 C-g        # abort current operation
@@ -233,12 +245,15 @@ M-x eval-buffer   # evaluate the Lisp expressions in the current buffer
 M-:               # shortcut for M-x eval
 C-x C-q           # toggle read-only mode for the current buffer
 C-u M-!           # execute a shell command, e.g. date, and write the output
+s-l g g           # go to definition (s is the super key mapped to option)
 
 ## Common M-x prompts (autocomplete with TAB)
 term                    # open the built-in terminal
 beginning-of-buffer     # go to the beginning of the buffer
 end-of-buffer           # go to the end of the buffer
 kill-buffer             # kill current buffer (not window)
+ispell-buffer           # spell check the current buffer
+ispell-region           # spell check the selected region
 
 ## Org mode.
 C-c C-c                 # add a tag
@@ -247,6 +262,7 @@ C-c C-c                 # add a tag
 =inline code=
 +strikethrough+
 
+C-c C-, s RET           # generate the following source code block
 #+BEGIN_SRC [language]
 A code snippet that can be run with C-c C-c
 #+END_SRC
@@ -308,6 +324,7 @@ git diff [filename]             # view detailed changes in unstaged files
 git diff --staged [filename]    # view detailed changes in staged but not
                                 # yet committed files
 git revert <commit-hash>        # revert a commit
+git remote remove <origin>      # remove remote "origin"
 
 
 # AWS Linux commands.
@@ -384,3 +401,19 @@ db.<collection-name>.find()             # find all documents in a collection
 # SSH
 ssh-keygen -t ed25519 -C "<email>"      # generate a SSH public key
 cat ~/.ssh/id_ed25519.pub               # show the generated SSH public key
+
+
+# CMake
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)   # placed in the ROOT CMakeLists.txt to
+                                        # generate compile_commands.json
+add_executable(exeName src1 src2 ...)   # generate an executable named exeName
+                                        # with source files src1, src2, etc.
+add_library(libName STATIC/SHARED/MODULE/INTERFACE src1 src2 ...)
+                                        # generate a library named libName with
+                                        # souce files src1, src2, etc.
+target_include_directories(target PUBLIC/PRIVATE/INTERFACE dir1 dir2 ...)
+                                        # add directories dir1, dir2, etc. for
+                                        # include files for target. A target can
+                                        # be either an executable for a library.
+target_link_libraries(target PUBLIC/PRIVATE/INTERFACE lib1 lib2 ...)
+                                        # link libraries lib1, lib2, etc. to target
