@@ -207,7 +207,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(org-bullets editorconfig auctex esup grip-mode prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+   '(dap-mode lsp-dart flutter cuda-mode org-bullets editorconfig auctex esup grip-mode prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -468,5 +468,74 @@
   :ensure t
   :defer t
   :hook (org-mode . org-bullets-mode))
+
+;; CUDA mode
+(use-package cuda-mode
+  :ensure t
+  :defer t
+  :mode "\\.cu\\'"
+  )
+
+;; Fortran mode
+(use-package f90
+  :ensure t
+  :defer t
+  :mode "\\.f90\\'"
+  )
+
+;; Spell check
+(setq ispell-program-name "aspell")
+
+;; Flutter and Dart
+(use-package dart-mode
+  :ensure t
+  :defer t
+  :hook (dart-mode . lsp))
+
+(use-package flutter
+  :ensure t
+  :defer t
+  :after dart-mode
+  :hook (dart-mode . flutter-test-mode))
+
+(use-package lsp-dart
+  :ensure t
+  :after (lsp-mode dart-mode)
+  :custom
+  (lsp-dart-flutter-sdk-dir "~/flutter"))
+
+;; UPCASE REGION
+(put 'upcase-region 'disabled nil)
+
+;; Cloned this repo from https://github.com/jdtsmith/ultra-scroll
+;; Note that ":defer t" cannot be used here.
+(use-package ultra-scroll
+  :load-path "~/.emacs.d/ultra-scroll"
+  :init
+  (setq scroll-conservatively 101 ; important!
+        scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
+
+;; DAP mode
+(use-package dap-mode
+  :ensure t
+  :defer t ; actually doesn't do anything
+  ;; :init is commented out to speed up startup time
+  ;; Manually toggle dap mode off and on after startup
+  ;; to use it (M-x dap-mode).
+  ;; :init
+  ;; (dap-auto-configure-mode)
+  :config
+  (dap-mode 1)
+  (dap-ui-mode 1)
+  (require 'dap-lldb)
+  ;; (require 'dap-python)
+  ;; (require 'dap-java)
+  ;; (require 'dap-go)
+  (require 'dap-hydra)
+  (setq dap-lldb-debug-program
+        '("/opt/homebrew/opt/llvm/bin/lldb-dap")) ;; installed llvm via brew
+  )
 
 ;;; init.el ends here
