@@ -52,6 +52,10 @@
 (global-set-key "\C-x\C-o"                          'other-frame)
 (global-set-key (kbd "C-c r")                       'revert-buffer)
 
+;; Don't use the mouse for zooming
+(global-unset-key (kbd "<C-wheel-up>"))
+(global-unset-key (kbd "<C-wheel-down>"))
+
 ;; Let's be a little transparent (on macOS).
 ( when (eq system-type 'darwin)
   (defun set-frame-transparency (&optional frame)
@@ -190,24 +194,24 @@
   :commands (magit-status)
   :bind (("C-x g" . magit-status)))
 
-;; View directory tree with neotree.
-(use-package neotree
+;; View directory tree with treemacs.
+(use-package treemacs
   :ensure t
   :defer t
-  :bind ("C-c n" . neotree-toggle)
+  :bind
+  ("C-c t" . treemacs)
   :config
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
-(use-package all-the-icons
-  :ensure t
-  :defer t
-  )
+  (define-key treemacs-mode-map (kbd "U") #'treemacs-root-up)   ;; cd ..
+  (define-key treemacs-mode-map (kbd "D") #'treemacs-root-down) ;; cd <dir>
+  (setq treemacs-width-is-initially-locked nil)
+  )  ;; Toggle Treemacs with C-c t
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(dap-mode lsp-dart flutter cuda-mode org-bullets editorconfig auctex esup grip-mode prettier-js typescript-mode vue-mode yaml-mode load-relative loc-changes test-simple realgud cargo rust-mode kotlin-mode lsp-java auto-complete-auctex auto-comlete-auctex lsp-ui lsp-mode markdown-preview-mode markdown-mode company-lsp web-mode company-tern darcula-theme dakrone-theme hc-zenburn-theme zenburn-theme color-theme-modern all-the-icons use-package undo-tree spacemacs-theme realgud-lldb one-themes neotree monokai-pro-theme magit flycheck elpy auto-complete atom-one-dark-theme)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -537,5 +541,21 @@
   (setq dap-lldb-debug-program
         '("/opt/homebrew/opt/llvm/bin/lldb-dap")) ;; installed llvm via brew
   )
+
+;; Emacs Multimedia System
+(use-package emms
+  :ensure t
+  :defer t
+  :config
+  (require 'emms-setup)
+  (require 'emms-player-mpv)
+  (emms-standard)
+  (setq emms-player-list '(emms-player-mpv))
+  (emms-default-players))
+
+;; Speed typing
+(use-package speed-type
+  :ensure t
+  :defer t)
 
 ;;; init.el ends here

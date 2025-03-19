@@ -220,8 +220,9 @@ C-x 8 RET  # switch to Unicode input mode
 C-x space  # rectangle selection
 C-@        # region selection
 C-x h      # select everything inside current buffer
-C-c n      # toggle directory tree view with neotree
-C-c C-c    # change (enter) directory in neotree
+C-c t      # toggle treemacs on/off
+D          # cd into a directory in treemacs
+U          # cd .. in treemacs
 C-w        # cut
 C-k        # cut current line after the cursor
 C-y        # paste
@@ -248,12 +249,29 @@ C-u M-!           # execute a shell command, e.g. date, and write the output
 s-l g g           # go to definition (s is the super key mapped to option)
 
 ## Common M-x prompts (autocomplete with TAB)
-term                    # open the built-in terminal
-beginning-of-buffer     # go to the beginning of the buffer
-end-of-buffer           # go to the end of the buffer
-kill-buffer             # kill current buffer (not window)
-ispell-buffer           # spell check the current buffer
-ispell-region           # spell check the selected region
+term                                # open the built-in terminal
+beginning-of-buffer                 # go to the beginning of the buffer
+end-of-buffer                       # go to the end of the buffer
+kill-buffer                         # kill current buffer (not window)
+ispell-buffer                       # spell check the current buffer
+ispell-region                       # spell check the selected region
+lsp                                 # start an LSP server and select a project path
+lsp-disconnect                      # disconnect the current LSP server
+lsp-workspace-folders-remove        # remove a folder from the
+                                    # ~/.emacs.d/.lsp-session-v1 file, which records
+                                    # a list of known project paths. For a C++
+                                    # project, a path contains a
+                                    # compile_commands.json file which can be used by
+                                    # LSP for intellisense.
+lsp-workspace-folders-add           # add a path to the aforementioned file. NOTE:
+                                    # instead of doing this, a more intuitive way to
+                                    # add a path is to disconnect LSP first, restart
+                                    # by doing "M-x lsp"", and interactively select a
+                                    # path. Then the path will be added to the file
+                                    # automatically.
+lsp-workspace-remove-all-folders    # clear the aforementioned file.
+treemacs-select-directory           # open treemacs in a selected directory (default
+                                    # to current directory)
 
 ## Org mode.
 C-c C-c                 # add a tag
@@ -279,6 +297,12 @@ C-c C-c                 # send the email
 shift-left/right        # change the style of a list
 M-left/right            # indent a subheading
 M-up/down               # reorder items in a list (also works for subheadings)
+
+# Treemacs
+d                       # delete current node
+R                       # rename current node
+cd                      # create a directory under current node
+cf                      # create a file under current node
 
 
 # Common Vim commands.
@@ -352,11 +376,22 @@ sudo systemctl reload nginx             # optional, but verify that the
 settings set stop-line-count-before <n>  # show n line before the current line
 settings set stop-line-count-after <n>   # show n line after the current line
 process launch -- <arg1> <arg2> ...      # start the debugger with arguments
+r <arg1> <arg2> ...                     # start the debugger with input arguments
 fr/frame v                               # list all variables currently in scope
+finish                                   # step out of the current frame
 
 
 # GDB commands.
 set args <arg1> <arg2> ...              # set input arguments
+r <arg1> <arg2> ...                     # start the debugger with input arguments
+
+
+# Emacs DAP mode
+M-x dap-debug-edit-template             # edit a debug template file (similar to
+                                        # launch.json in vscode)
+M-x dap-breakpoint-toggle               # set/remove a breakpoint at the current
+                                        # line
+M-x dap-debug                           # start the debuger
 
 
 # Docker
@@ -417,3 +452,11 @@ target_include_directories(target PUBLIC/PRIVATE/INTERFACE dir1 dir2 ...)
                                         # be either an executable for a library.
 target_link_libraries(target PUBLIC/PRIVATE/INTERFACE lib1 lib2 ...)
                                         # link libraries lib1, lib2, etc. to target
+
+
+# Markdown
+[text](url)                             # create a hyperlink with custom text
+| col1 | col2 | col3 |                  # create a table in markdown
+|--------------------|                  # NOTE: no horizontal lines after the header
+| row1 | row1 | row1 |
+| row2 | row2 | row2 |
