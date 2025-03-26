@@ -146,10 +146,16 @@
 ;;   :config
 ;;   (load-theme 'darcula t))
 
-(use-package jetbrains-darcula-theme
+;; (use-package jetbrains-darcula-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'jetbrains-darcula t))
+
+(use-package catppuccin-theme
   :ensure t
+  :init (setq catppuccin-flavor 'macchiato)
   :config
-  (load-theme 'jetbrains-darcula t))
+  (load-theme 'catppuccin t))
 
 ;; Customize highlighting of TODO keywords
 (add-hook 'prog-mode-hook
@@ -217,10 +223,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-headline-done ((t (:foreground "SlateGray4"))))
- '(org-level-1 ((t (:foreground "DarkGoldenrod2" :weight bold))))
- '(org-level-2 ((t (:foreground "SteelBlue2"))))
- '(org-level-3 ((t (:foreground "MediumPurple2")))))
+ '(org-headline-done ((t (:foreground "SlateGray4")))))
 
 ;; Web Development
 (use-package web-mode
@@ -257,13 +260,11 @@
 
       org-todo-keyword-faces
       '(
-        ("TODO" . (:foreground "pink" :weight bold :box nil))
+        ("TODO" . (:foreground "cyan" :weight bold :box nil))
         ("IN-PROGRESS" . (:foreground "red" :weight bold :box nil))
         ("DONE" . (:foreground "YellowGreen" :weight bold :box nil))
        )
 )
-;; Customize header faces.
-
 
 ;; Markdown mode.
 ;; REQUIRES: markdown and grip command-line tools, which can be installed with
@@ -295,10 +296,6 @@
   :ensure auctex
   :defer t
   )
-
-;; Set pdf tools as the default viewer.
-(setq TeX-view-program-selection '((output-pdf "pdf-tools"))
-      TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
 
 ;; Automatically refresh the viewer.
 (add-hook 'TeX-after-compilation-finished-functions
@@ -557,5 +554,38 @@
 (use-package speed-type
   :ensure t
   :defer t)
+
+;; vterm
+(use-package vterm
+  :ensure t
+  :defer t)
+
+;; vertico - modern UI for minibuffer completions
+(use-package vertico
+  :ensure t
+  :init (vertico-mode)
+  :defer t)
+
+;; orderless - flex matching for vertico
+(use-package orderless
+  :ensure t
+  :init (setq completion-styles '(orderless))
+  :defer t)
+
+;; marginalia - add annotations to minibuffer completions
+(use-package marginalia
+  :ensure t
+  :init (marginalia-mode)
+  :defer t)
+
+;; pdf-tools
+(use-package pdf-tools
+  :ensure t
+  :defer t
+  :magic ("%PDF" . pdf-view-mode)
+  :config
+  (pdf-tools-install)
+  (setq-default pdf-view-display-size 'fit-page)
+  (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1))))
 
 ;;; init.el ends here
