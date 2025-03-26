@@ -132,6 +132,9 @@
   :defer t
   :config
   (yas-global-mode 1))
+(use-package yasnippet-snippets
+  :ensure t
+  :defer t)
 
 (use-package lsp-ui
   :ensure t
