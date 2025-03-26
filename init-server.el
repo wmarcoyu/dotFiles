@@ -55,17 +55,6 @@
 (global-set-key "\C-x\C-o"                          'other-frame)
 (global-set-key (kbd "C-c r")                       'revert-buffer)
 
-;; Intellisense syntax checking
-(use-package flycheck
-  :init (global-flycheck-mode)
-
-  ;; eslint
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-
-  :ensure t
-  :defer t
-  )
-
 ;; Dialog settings.  No more typing the whole yes or no. Just y or n
 ;; will do. Disable GUI dialogs and use emacs text interface.
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -86,22 +75,6 @@
 ;; Disable auto-save files.
 (setq auto-save-default nil)
 
-;; Global company mode that allows dynamic autocomplete.
-(add-hook 'after-init-hook 'global-company-mode)
-
-;; Enable elpy for Python development.
-(use-package elpy
-  :ensure t
-  :defer t
-  :init
-  (advice-add 'python-mode :before 'elpy-enable))
-
-(use-package yasnippet
-  :ensure t
-  :defer t
-  :config
-  (yas-global-mode 1))
-
 (setq-default c-basic-offset 2)
 
 ;; Color theme.
@@ -110,10 +83,16 @@
 ;;   :config
 ;;   (load-theme 'darcula t))
 
-(use-package jetbrains-darcula-theme
+;; (use-package jetbrains-darcula-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'jetbrains-darcula t))
+
+(use-package catppuccin-theme
   :ensure t
+  :init (setq catppuccin-flavor 'macchiato)
   :config
-  (load-theme 'jetbrains-darcula t))
+  (load-theme 'catppuccin t))
 
 ;; Customize highlighting of TODO keywords
 (add-hook 'prog-mode-hook
@@ -165,96 +144,26 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; Web Development
-(use-package web-mode
-  :mode "\\.jsx?\\'"
-  :mode "\\.html?\\'"
-  :mode "\\.phtml\\'"
-  :mode "\\.tpl\\.php\\'"
-  :mode "\\.[agj]sp\\'"
-  :mode "\\.as[cp]x\\'"
-  :mode "\\.erb\\'"
-  :mode "\\.mustache\\'"
-  :mode "\\.djhtml\\'"
-  :mode "\\.vue\\'"
-  :config
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-attr-indent-offset 2)
-  (setq web-mode-enable-auto-indentation nil)
-  (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
-  (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
-  (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
-  (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil))
-  :ensure t
-  :defer t
-  )
-
-;; Enable hs-minor-mode to fold code blocks.
-(add-hook 'prog-mode-hook #'hs-minor-mode)
-
 ;; Add IN-PROGRESS keyword to org mode.
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "DONE"))
 
       org-todo-keyword-faces
       '(
-        ("TODO" . (:foreground "pink" :weight bold :box nil))
+        ("TODO" . (:foreground "cyan" :weight bold :box nil))
         ("IN-PROGRESS" . (:foreground "red" :weight bold :box nil))
-        ("DONE" . (:foreground "YellowGreen" :weight bold :box nil))
+        ("DONE" . (:foreground "green" :weight bold :box nil))
        )
 )
 ;; Customize header faces.
 (custom-set-faces
- '(org-headline-done ((t (:foreground "SlateGray4" :strike-through t))))
- '(org-level-1 ((t (:foreground "DarkGoldenrod2" :weight bold))))
- '(org-level-2 ((t (:foreground "SteelBlue2"))))
- '(org-level-3 ((t (:foreground "MediumPurple2"))))
+ '(org-headline-done ((t (:foreground "SlateGray4"))))
  ;; '(org-level-4 ((t (:foreground "magenta" :weight bold))))
  ;; '(org-level-5 ((t (:foreground "orange" :weight bold))))
  ;; '(org-level-6 ((t (:foreground "blue" :weight bold))))
  ;; '(org-level-7 ((t (:foreground "red" :weight bold))))
  ;; '(org-level-8 ((t (:foreground "purple" :weight bold))))
  )
-
-;; YAML mode.
-(use-package yaml-mode
-  :mode "\\.yml\\'"
-  :ensure t
-  :defer t
-  )
-
-;; Vue mode.
-(use-package vue-mode
-  :ensure t
-  :defer t
-  :mode "\\.vue\\'"
-  :config
-  (add-hook 'vue-mode-hook
-            (lambda ()
-              (setq indent-tabs-mode nil)
-              (setq js-indent-level 2)
-              (setq css-indent-offset 2)
-              (setq tab-width 2)))
-  )
-
-;; TypeScript mode.
-(use-package typescript-mode
-  :ensure t
-  :defer t
-  :mode "\\.ts\\'"
-  :config
-  (setq typescript-indent-level 2)
-  )
-
-;; Prettier for Vue and TypeScript.
-(use-package prettier-js
-  :ensure t
-  :defer t
-  :hook ((vue-mode . prettier-js-mode)
-         (typescript-mode . prettier-js-mode))
-  )
 
 ;; Untabify the current buffer upon save unless it's a Makefile.
 (defun untabify-buffer ()
