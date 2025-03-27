@@ -55,6 +55,9 @@
 (global-set-key "\C-x\C-o"                          'other-frame)
 (global-set-key (kbd "C-c r")                       'revert-buffer)
 
+;; Use windmove to move between windows
+(windmove-default-keybindings)
+
 ;; Dialog settings.  No more typing the whole yes or no. Just y or n
 ;; will do. Disable GUI dialogs and use emacs text interface.
 (fset 'yes-or-no-p 'y-or-n-p)

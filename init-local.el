@@ -56,6 +56,9 @@
 (global-unset-key (kbd "<C-wheel-up>"))
 (global-unset-key (kbd "<C-wheel-down>"))
 
+;; Use windmove to move between windows
+(windmove-default-keybindings)
+
 ;; Let's be a little transparent (on macOS).
 ( when (eq system-type 'darwin)
   (defun set-frame-transparency (&optional frame)
@@ -93,8 +96,8 @@
 (use-package whitespace
   :ensure nil  ;; `whitespace` is a built-in package, so no need to install it
   :defer t
-  :hook (prog-mode . whitespace-mode)
   :config
+  (global-whitespace-mode 1)
   (setq whitespace-style '(face lines-tail))
   (setq whitespace-line-column 90))
 
@@ -118,14 +121,22 @@
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 
-;; C++ autocomplete.
+;; lsp
 (use-package lsp-mode
   :ensure t
   :defer t
-  :hook (c++-mode . lsp)
-  :commands lsp
+  :commands (lsp lsp-deferred)
+  :hook ((c++-mode . lsp-deferred)
+         (java-mode . lsp-deferred)
+         (vue-mode . lsp-deferred)
+         (typescript-mode . lsp-deferred))
   :config
   (setq lsp-prefer-flymake nil))
+
+(use-package lsp-ui
+  :ensure t
+  :defer t
+  :commands lsp-ui-mode)
 
 (use-package yasnippet
   :ensure t
@@ -135,11 +146,6 @@
 (use-package yasnippet-snippets
   :ensure t
   :defer t)
-
-(use-package lsp-ui
-  :ensure t
-  :defer t
-  :commands lsp-ui-mode)
 
 (setq-default c-basic-offset 2)
 
@@ -220,7 +226,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '(auctex cargo catppuccin-theme cuda-mode darcula-theme editorconfig
+            elpy emms esup flutter flycheck go-mode grip-mode
+            jetbrains-darcula-theme lsp-dart lsp-java lsp-ui magit
+            marginalia markdown-preview-mode multiple-cursors
+            orderless org-bullets pdf-tools prettier-js realgud-lldb
+            spacemacs-theme speed-type typescript-mode vertico vterm
+            vue-mode web-mode xelb yaml-mode yasnippet-snippets)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -312,12 +325,6 @@
                         (TeX-command "LaTeX" 'TeX-master-file -1)) nil 'local)))
 
 ;; Java Intellisense.
-(use-package lsp-mode
-  :ensure t
-  :defer t
-  :commands (lsp lsp-deferred)
-  :hook (java-mode . lsp-deferred))
-
 (use-package lsp-java
   :ensure t
   :defer t
@@ -398,20 +405,6 @@
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2)
-  )
-
-;; LSP for Vue and TypeScript.
-(use-package lsp-mode
-  :ensure t
-  :defer t
-  :hook ((vue-mode . lsp)
-         (typescript-mode . lsp))
-  :commands lsp
-  )
-(use-package lsp-ui
-  :ensure t
-  :defer t
-  :commands lsp-ui-mode
   )
 
 ;; Prettier for Vue and TypeScript.
@@ -590,5 +583,12 @@
   (pdf-tools-install)
   (setq-default pdf-view-display-size 'fit-page)
   (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1))))
+
+;; avy - jump to visible text
+(use-package avy
+  :ensure t
+  :defer t
+  :bind ("C-:" . avy-goto-char)
+  :bind("C-'" . avy-goto-char-2))
 
 ;;; init.el ends here
